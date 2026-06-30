@@ -1,0 +1,76 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: Vector__XXX
+
+// Jaguar XF X250 — HS Bus (500 kbps)
+// Confidence prefixes: c_ confirmed, i_ inferred, u_ unknown
+//
+// IMPORTANT: the i_RPM / i_VehicleSpeed / i_OilTemp / i_CoolantTemp frames
+// below are from Rhys Morgan's pre-facelift (2009/2010) x250-can project.
+// They are UNCONFIRMED on the facelift (2012+) cluster — transmitting them
+// produces no gauge response despite the cluster being fully awake and the
+// HS bus active. See README.md "Open Problem" section. This is the primary
+// open question this project is trying to resolve — a facelift HS capture
+// is needed to confirm or correct these frame IDs / byte layouts.
+//
+// The c_ frames in the second half of this file are confirmed by direct
+// observation of the FACELIFT cluster's own HS output at power-on, and are
+// NOT present in Rhys Morgan's pre-facelift documentation.
+
+BO_ 153 i_RPM_0x099: 8 Vector__XXX
+ SG_ i_RPM_raw : 39|16@0+ (1,0) [0|8191] "rpm" Vector__XXX
+
+BO_ 377 i_VehicleSpeed_0x179: 8 Vector__XXX
+ SG_ i_Speed_raw : 23|16@0+ (0.0065,0) [0|300] "km/h" Vector__XXX
+
+BO_ 953 i_OilTemp_0x3B9: 8 Vector__XXX
+ SG_ i_OilTemp_raw : 40|8@1+ (1,-60) [-60|195] "degC" Vector__XXX
+
+BO_ 217 i_CoolantTemp_0x0D9: 8 Vector__XXX
+ SG_ i_CoolantTemp_raw : 0|8@1+ (1,-60) [-60|195] "degC" Vector__XXX
+
+// --- Facelift cluster self-output frames (confirmed, this project) ---
+
+BO_ 535 c_HSHeartbeat_0x217: 8 Vector__XXX
+ SG_ c_Heartbeat_static : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+
+BO_ 599 c_RTCClock_0x257: 8 Vector__XXX
+ SG_ c_RTC_Hour : 24|8@1+ (1,0) [0|23] "h" Vector__XXX
+ SG_ c_RTC_Minute : 32|8@1+ (1,0) [0|59] "min" Vector__XXX
+ SG_ c_RTC_Second : 40|8@1+ (1,0) [0|59] "s" Vector__XXX
+ SG_ c_RTC_SubSecCounter : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1279 c_RTCTimestamp_0x4FF: 8 Vector__XXX
+ SG_ c_UnixTimestamp : 39|32@0+ (1,0) [0|4294967295] "s" Vector__XXX
+
+CM_ SG_ 1279 c_UnixTimestamp "Cluster's stored RTC as Unix epoch seconds, big-endian. Confirms 0x257 HH:MM:SS. NOTE: on first power-up after extended storage this reflects the last time the cluster saw a live RTC source (e.g. ~2018 on a unit unused since then) -- not the current date/time.";
+
+BO_ 1271 i_OdometerOrLifetime_0x4F7: 8 Vector__XXX
+ SG_ i_Field1 : 39|16@0+ (1,0) [0|65535] "" Vector__XXX
+ SG_ i_Field2 : 55|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 1297 i_HSInitState_0x511: 8 Vector__XXX
+ SG_ i_InitState_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+CM_ SG_ 1297 i_InitState_b1 "HS-side cluster init state machine. Observed sequence: alternates 0x01/0x02 (~10 frames) then locks to 0x04. NOT the same as MS-bus 0x511 (fuel display enable) -- same ID, different bus, different meaning, different direction.";
+
+BO_ 592 u_Unknown_0x250: 8 Vector__XXX
+BO_ 823 u_Unknown_0x337: 8 Vector__XXX
+BO_ 919 u_Unknown_0x397: 8 Vector__XXX
+BO_ 1111 u_Unknown_0x457: 8 Vector__XXX
+BO_ 1117 u_Unknown_0x45D: 8 Vector__XXX
+BO_ 1149 u_Unknown_0x47D: 8 Vector__XXX
+
+CM_ BO_ 153 "i_RPM: Pre-facelift (Rhys Morgan HsInfo.js). UNCONFIRMED on facelift cluster -- transmitting at any tested value produces no tachometer response.";
+CM_ BO_ 377 "i_VehicleSpeed: Pre-facelift (Rhys Morgan HsInfo.js). UNCONFIRMED on facelift cluster -- transmitting at any tested value produces no speedometer response.";
+CM_ BO_ 535 "c_HSHeartbeat: Constant payload 00 03 FF 00 7F FF 00 00, ~8ms interval. Cluster-originated -- observe only, do not transmit on a live bus with the cluster present.";
+CM_ BO_ 599 "c_RTCClock: Cluster-originated real-time clock broadcast, ~40ms interval. Byte 0/1/2 purpose not fully decoded (byte 0 = 0xFF likely invalid/uninitialised flag).";
+CM_ BO_ 1279 "c_RTCTimestamp: Cluster-originated, ~170ms interval, increments ~4 ticks/sec during capture (sub-second resolution counter, not a 1Hz tick).";
+CM_ BO_ 919 "u_Unknown_0x397: Byte 1 alternates 0x80/0x00, byte 5 static 0x3C (60 dec), byte 7 alternates 0x10/0x00. Pattern suggests a status/valid flag pair -- undecoded.";
+CM_ BO_ 1111 "u_Unknown_0x457: Bytes 0/1 vary, bytes 2/5/7 stable (0x66/0x60/0x6C). Undecoded.";
+CM_ BO_ 1117 "u_Unknown_0x45D: Three observed states, bytes 5/6 stable (0x05/0x47). Undecoded.";
+CM_ BO_ 1149 "u_Unknown_0x47D: Burst pattern at startup only, settles to 00 00 BF 00 18 00 00 00. Undecoded.";

@@ -1,0 +1,63 @@
+VERSION ""
+
+NS_ :
+
+BS_:
+
+BU_: Vector__XXX
+
+// Jaguar XF X250 — MS Bus (125 kbps)
+// Confidence prefixes: c_ confirmed, i_ inferred, u_ unknown
+// See README.md for sourcing and confidence definitions.
+// Do not apply PSA or other-platform DBC labels to these frame IDs.
+
+BO_ 126 c_Keepalive_0x07E: 8 Vector__XXX
+ SG_ c_FuelLevel_b4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 125 c_IgnitionState_0x07D: 8 Vector__XXX
+ SG_ c_IgnitionStage_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 122 u_BusPresence_0x07A: 8 Vector__XXX
+ SG_ u_Byte0_toggle : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 223 u_StatusFlags_0x0DF: 8 Vector__XXX
+ SG_ u_Byte0_status : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 40 c_GearSelector_0x028: 8 Vector__XXX
+ SG_ c_GearPosition : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_LightSensor : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 104 c_FuelLevel_0x068: 8 Vector__XXX
+ SG_ c_FuelLevel_raw : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 1299 i_FuelDisplayEnable_0x513: 8 Vector__XXX
+ SG_ i_FDE_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FDE_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FDE_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 520 i_ClimateControl_0x208: 8 Vector__XXX
+ SG_ i_RearHeater : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_AutoMode : 29|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_Defrost : 30|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_FrontHeater : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_Recirculation : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 680 i_BCMSettings_0x2A8: 8 Vector__XXX
+ SG_ i_DriveAwayLocking : 32|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ i_AutoLock : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_PassiveArming : 38|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_AlarmSensors : 35|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_TwoStageLocking : 40|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_MirrorFold : 43|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_GlobalWindowsClose : 45|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_GlobalWindowsOpen : 46|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 136 c_HSWakeTrigger_0x088: 8 Vector__XXX
+ SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+CM_ BO_ 126 "c_Keepalive: Bench confirmed mandatory. ~50ms interval. Must be continuously transmitted, not log-replayed (rolling counter breaks at loop boundary).";
+CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
+CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
+CM_ BO_ 104 "c_FuelLevel: Bench confirmed, 5 calibration points (33/50/66/75/80%). Bytes 3-4 LE uint16. Pairs with 0x513 for needle movement.";
+CM_ BO_ 1299 "i_FuelDisplayEnable: Required for fuel needle display. 40s averaging delay after first seen. Not yet independently bench-confirmed on this project's hardware.";
+CM_ BO_ 136 "c_HSWakeTrigger: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only.";
