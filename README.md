@@ -42,8 +42,8 @@ documentation/data respectively.
 | Cluster | EX23-10849-AA — 2013/2014 facelift, XFR-S variant, 190 MPH face |
 | Platform | X250, facelift (MY2012+) |
 | Connectors | C2MC01A (32-pin, CAN/switches), C2MC01B (32-pin, power/grounds) |
-| Bench interface | Raspberry Pi + Waveshare 2-CH CAN HAT (dual SN65HVD230-class transceivers) |
-| Capture/analysis | SavvyCAN, python-can |
+| Bench interface | 2x CANable USB devices running Candlelight firmware |
+| Capture/analysis | SavvyCAN using QT Candlelight dll |
 
 Full pinout: [`docs/cluster_pinout.md`](docs/cluster_pinout.md)
 Bench bring-up procedure: [`docs/bench_setup.md`](docs/bench_setup.md)
