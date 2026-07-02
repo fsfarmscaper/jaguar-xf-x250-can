@@ -58,6 +58,53 @@ BO_ 1297 i_HSInitState_0x511: 8 Vector__XXX
 
 CM_ SG_ 1297 i_InitState_b1 "HS-side cluster init state machine. Observed sequence: alternates 0x01/0x02 (~10 frames) then locks to 0x04. NOT the same as MS-bus 0x511 (fuel display enable) -- same ID, different bus, different meaning, different direction.";
 
+// --- Confirmed by bench test (facelift cluster, this session) ---
+// Source for bit layouts: RR/XJ cross-platform docs, confirmed by
+// direct bench payload testing on the XF250 facelift cluster.
+
+BO_ 1003 c_DSC_ABS_Status_0x3EB: 8 Vector__XXX
+ SG_ u_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_DSC_State : 8|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ i_ESP_Off : 11|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_ESP_Active : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_ESP_Flash : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_ABS_Fault : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_ABS_OK_Combo : 21|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ u_Beep : 23|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1011 c_GearSelectorTester_0x3F3: 8 Vector__XXX
+ SG_ c_GearFlag_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_GearFlag_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_Counter_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_Counter_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_GearFlag_Byte4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_ParkFlag_Byte5 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_ParkFlag_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 922 c_AirbagSeatbelt_0x39A: 8 Vector__XXX
+ SG_ i_Airbag_Warning : 50|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_Airbag_Flash : 51|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_Seatbelt_Warning : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+
+// --- Inconclusive / open leads (this session) ---
+
+BO_ 523 u_SpeedCandidate_0x20B: 8 Vector__XXX
+
+BO_ 672 i_GearKnobStatus_0x2A0: 8 Vector__XXX
+ SG_ i_Counter_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_Counter_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_GearFlag_Byte4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_GearFlag_Byte5 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 665 u_GearKnobModule_0x299: 8 Vector__XXX
+
+BO_ 1058 u_GearKnobRaise_0x422: 8 Vector__XXX
+
+BO_ 1205 c_ASL_LED_0x4B5: 8 Vector__XXX
+ SG_ c_ASL_LED_State : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
 BO_ 592 u_Unknown_0x250: 8 Vector__XXX
 BO_ 823 u_Unknown_0x337: 8 Vector__XXX
 BO_ 919 u_Unknown_0x397: 8 Vector__XXX
@@ -71,6 +118,21 @@ CM_ BO_ 535 "c_HSHeartbeat: Constant payload 00 03 FF 00 7F FF 00 00, ~8ms inter
 CM_ BO_ 599 "c_RTCClock: Cluster-originated real-time clock broadcast, ~40ms interval. Byte 0/1/2 purpose not fully decoded (byte 0 = 0xFF likely invalid/uninitialised flag).";
 CM_ BO_ 1279 "c_RTCTimestamp: Cluster-originated, ~170ms interval, increments ~4 ticks/sec during capture (sub-second resolution counter, not a 1Hz tick).";
 CM_ BO_ 919 "u_Unknown_0x397: Byte 1 alternates 0x80/0x00, byte 5 static 0x3C (60 dec), byte 7 alternates 0x10/0x00. Pattern suggests a status/valid flag pair -- undecoded.";
-CM_ BO_ 1111 "u_Unknown_0x457: Bytes 0/1 vary, bytes 2/5/7 stable (0x66/0x60/0x6C). Undecoded.";
+CM_ BO_ 1111 "u_Unknown_0x457: Bytes 0/1 vary, bytes 2/5/7 stable (0x66/0x60/0x6C). Undecoded. CONFIRMED cluster-originated (already observed as Rx) -- transmitting it caused a bus ID collision on the bench (frame flips between Tx/Rx in logs). DO NOT TRANSMIT this ID on a live bus with the cluster present." NEW DATA POINT (VanGogh/GSM forum table): byte2=0x00 labelled ''Blue light off'' (rest of payload zero, only a single state given, no ''on'' row) -- consistent with this ID carrying lighting-related indicator bits as already suspected (front/rear fog, park lights), though ''blue light'' doesn''t obviously map to those -- possibly a high-beam-assist or DRL icon instead. Still DO NOT TRANSMIT.";
 CM_ BO_ 1117 "u_Unknown_0x45D: Three observed states, bytes 5/6 stable (0x05/0x47). Undecoded.";
 CM_ BO_ 1149 "u_Unknown_0x47D: Burst pattern at startup only, settles to 00 00 BF 00 18 00 00 00. Undecoded.";
+
+CM_ BO_ 1003 "c_DSC_ABS_Status: CONFIRMED by bench test. Payload 01 01 60 00 00 00 00 00 suppresses ABS, ESP, and DSC warning lights simultaneously. byte1=0x01 (DSC on), byte2=0x60 (ABS OK combo bits 0x40|0x20). byte0=0x01 -- unclear if this value matters or if it still works with byte0=0x00 / a rolling counter, not isolated yet. Individual ESP-active/ESP-flash/ABS-fault bits are inferred from RR/XJ docs, not independently toggled/tested -- only the combined suppress-everything payload has been bench-verified. ''stability control not available'' bit (RR notation '1.07') is ambiguous -- the mask/bit convention doesn't match the rest of this doc's notation and would overlap the confirmed DSC_State field if taken as mask 0x07 -- deliberately not modeled here pending clarification. Beep bit (0x80, byte2) effect unknown. NEW DATA POINT (VanGogh, forums.moderndaymods.com ''Gear Shift Module (GSM)'' thread, same source repo author): a simple table gives byte1=0x00, byte2=0xAA as ''LED DSC off'' and byte1=0x00, byte2=0x00 as ''LED DSC on'' -- rest of payload zero in both. This does NOT obviously reconcile with our own bench-confirmed suppress-everything combo (byte1=0x01, byte2=0x60) -- 0xAA (1010 1010) shares no bits with 0x60 (0110 0000). Possible explanations: (a) ''LED DSC'' in that table refers to a physical DSC-OFF button indicator on the console/GSM module, not the cluster''s ABS/DSC warning icons -- a different consumer of the same ID; (b) byte2 is a small enum rather than independent bits and both data points are correct for different things it controls. Not yet bench-tested against the XF250 cluster specifically -- worth an isolated test with byte1=0x00 and byte2=0xAA/0x00 to see what, if anything, changes on the cluster itself.";
+CM_ BO_ 1011 "c_GearSelectorTester: ID is Tester-to-gear-selector (diagnostic/keep-alive style). CONFIRMED per-gear byte table, sourced from genuine facelift XF250 gear-knob candumps (Tom-evnut/Land-Rover-Gearknob repo -- main log 16205 rows, plus a dedicated Sport log and the author''s own findings spreadsheet) -- NOT cross-platform inference, this is the actual target platform:
+  Park:    byte0=5C byte1=66 byte4=FF byte5=7F byte6=00 byte7=80
+  Reverse: byte0=7C byte1=24 byte4=FE byte5=FF byte6=01 byte7=00
+  Neutral: byte0=7C byte1=25 byte4=FD byte5=FF byte6=02 byte7=00
+  Drive:   byte0=7C byte1=24 byte4=FB byte5=FF byte6=04 byte7=00
+  Sport:   byte0=7C byte1=24 byte4=F7 byte5=FF byte6=08 byte7=00
+byte1=0x24 is shared by Reverse/Drive/Sport -- byte4/byte6 are what actually disambiguate them. NOTE: the author''s findings spreadsheet lists Drive byte6 as 0x03, but every raw sample in our own pulled logs shows byte6=0x04 for Drive, consistently -- treating the spreadsheet value as a likely transcription error and keeping the directly-observed 0x04. byte2 is a free-running counter (cycles 0x00-0x0E, 15-value wrap, matching the pattern seen elsewhere on this bus); byte3 = byte2 + a gear-dependent offset, CONFIRMED: Park=+0x82, Reverse=+0x03, Neutral=+0x04, Drive=+0x06, Sport=+0x0A. SUPERSEDES the earlier all-zero suppression test: all-zero clears the Gear Box Fault warning but does not match this table internally (byte6=0x00 reads Park, byte7=0x00 reads not-parked), so it likely doesn''t show a coherent gear on the LED. Use the confirmed per-gear values above instead -- a user-captured PARK frame on the bench (1C 26 00 82 FF 7F 00 80) already matched byte4/5/6/7 of this table and correctly set the LED to P.";
+CM_ BO_ 922 "c_AirbagSeatbelt: CONFIRMED by bench test. All-zero payload removes both the airbag yellow warning light and the seatbelt red warning light. Individual bit assignments (byte6 airbag/airbag-flash, byte7 belt) are inferred from prior project notes, not independently toggled -- only the all-zero suppress-everything state is bench-verified.";
+CM_ BO_ 1205 "c_ASL_LED_0x4B5: CONFIRMED toggle, sourced from VanGogh/GSM forum table (forums.moderndaymods.com, same contributor family as the gear-knob repo). byte3=0x00 = ASL LED off, byte3=0x80 = ASL LED on, rest of payload zero in both. ASL likely ''Adaptive/Automatic Speed Limiter''. Not yet independently bench-tested on the XF250 facelift cluster.";
+CM_ BO_ 672 "i_GearKnobStatus_0x2A0: From the same facelift XF250 gear-knob logs as 0x3F3/0x312, NOT yet independently bench-tested. ~1.6-1.8ms interval (fast). byte0 static 0x00, byte1 is a 15-value rolling counter (0x60-0x6E), byte2 = byte1 + 0x22 (constant offset), byte3 static 0x00, byte7 static 0x21 regardless of gear. Bytes 4-6 carry gear state, two combos observed: Park = 80 FF 7F, Reverse-ish = 00 FE FF (captured during a wake/raise/reverse/park sequence -- gear correlation inferred from sequence position, not independently confirmed against a labelled state). Likely a second, faster gear/knob-position broadcast alongside 0x3F3 -- role vs 0x3F3 not yet understood (redundant status vs a different consumer module).";
+CM_ BO_ 665 "u_GearKnobModule_0x299: From the same facelift logs. Completely static payload (00 00 00 00 00 00 18 74) across all observed gear states and the wake sequence, ~65-100ms interval. Undecoded -- possibly a module identity/capability frame rather than a state broadcast, given it never changes.";
+CM_ BO_ 1058 "u_GearKnobRaise_0x422: From the same facelift logs. Static 00 00 00 00 00 00 00 60 during steady-state Park in the main log, but the wake/raise/reverse/park log shows byte7 taking two values (0x60 and 0x67) -- likely tied to the knob's physical raise/lower motor state or a gear transition, not yet isolated. Different from the earlier L322-doc-sourced guess of 0x422 as a terrain-response frame -- that guess is superseded now that we have this ID confirmed present and active on the actual facelift platform, though its real function is still undecoded.";
+CM_ BO_ 523 "u_SpeedCandidate_0x20B: Byte-level analysis of the L322 candump (378 samples, ~15ms interval): byte0=0xC3 static, byte2=0x87 static. byte1 is a 15-value rolling counter (0x03-0x11, wraps). byte4 = (byte1-3)*4 -- derived/redundant, likely a freshness check. byte3/byte5 form a SEPARATE, much slower counter pair: baseline byte3=0xFF/byte5=0x00, then byte3=0xFE/byte5=0x01, then byte3=0xFD/byte5=0x02 (byte3 = 0xFF - N, byte5 = N) -- only reaches N=2 over ~6 seconds while the source vehicle is stationary. Working theory: this is a raw WHEEL-PULSE counter (ticking from idle-engine vibration on the tone ring, not real rotation), not a direct speed magnitude -- i.e. a differentiate-over-time signal like a real ABS/wheel-speed module would send, structurally similar to how 0x3EB gates trust in other DSC data. Bench test: replaying this pattern changed the speedometer from pegged-at-max (no 0x20B present) to holding at 0 -- consistent with the cluster wanting to see counter *movement* rather than a static magnitude in 0x29B. NEXT TEST: run 0x20B with its counter incrementing (even arbitrarily) together with 0x29B bytes 6-7 set nonzero, check whether the needle now tracks a plausible value instead of holding at 0.";
