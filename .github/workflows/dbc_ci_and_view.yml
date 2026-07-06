@@ -5,16 +5,10 @@ on:
     branches: [ main ]
     paths:
       - "**.dbc"
-  pull_request:
-    branches: [ main ]
-    paths:
-      - "**.dbc"
-
-  # allows manual run from GitHub UI
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -32,95 +26,67 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install cantools
+        run: pip install cantools
 
-      # -----------------------------
-      # 1. Validate DBC files
-      # -----------------------------
       - name: Validate DBC syntax
         run: |
-          echo "Validating DBC files..."
           for file in $(find . -name "*.dbc"); do
-            echo "Checking $file"
             python -m cantools dump "$file" > /dev/null
           done
 
-      # -----------------------------
-      # 2. Convert DBC → JSON
-      # -----------------------------
-      - name: Build DBC JSON for web UI
+      - name: Build DBC JSON
         run: |
           mkdir -p web
           python - << 'EOF'
-import cantools
-import json
-import glob
+import cantools, json, glob
 
 dbcs = glob.glob("**/*.dbc", recursive=True)
 
-all_data = []
+msgs = []
 
-for dbc_file in dbcs:
-    db = cantools.database.load_file(dbc_file)
-
-    for msg in db.messages:
-        all_data.append({
-            "name": msg.name,
-            "id": msg.frame_id,
-            "length": msg.length,
+for f in dbcs:
+    db = cantools.database.load_file(f)
+    for m in db.messages:
+        msgs.append({
+            "name": m.name,
+            "id": m.frame_id,
+            "len": m.length,
             "signals": [
                 {
                     "name": s.name,
                     "start": s.start,
                     "length": s.length,
-                    "byte_order": s.byte_order,
                     "scale": s.scale,
-                    "offset": s.offset,
-                    "minimum": s.minimum,
-                    "maximum": s.maximum,
-                    "unit": s.unit
-                }
-                for s in msg.signals
+                    "offset": s.offset
+                } for s in m.signals
             ]
         })
 
 with open("web/dbc.json", "w") as f:
-    json.dump(all_data, f, indent=2)
+    json.dump(msgs, f, indent=2)
 EOF
 
-      # -----------------------------
-      # 3. Create simple CAN web UI
-      # -----------------------------
-      - name: Build Web UI
+      - name: Create Web UI
         run: |
           mkdir -p web
 
           cat > web/index.html << 'EOF'
-<!DOCTYPE html>
+<!doctype html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>CAN DBC Web Decoder</title>
-  <style>
-    body { font-family: Arial; margin: 20px; }
-    textarea { width: 100%; height: 120px; }
-    pre { background: #111; color: #0f0; padding: 10px; }
-  </style>
+  <meta charset="utf-8">
+  <title>CAN DBC Viewer</title>
 </head>
 <body>
+<h2>CAN Decoder</h2>
 
-<h2>CAN / DBC Web Decoder</h2>
-
-<textarea id="input" placeholder="Paste candump line here"></textarea>
-<br><br>
+<textarea id="in" style="width:100%;height:120px;"></textarea>
+<br>
 <button onclick="decode()">Decode</button>
 
-<h3>Output</h3>
 <pre id="out"></pre>
 
 <script src="app.js"></script>
-
 </body>
 </html>
 EOF
@@ -130,59 +96,43 @@ let dbc = [];
 
 fetch("dbc.json")
   .then(r => r.json())
-  .then(data => dbc = data);
+  .then(d => dbc = d);
 
 function decode() {
-  const input = document.getElementById("input").value.trim();
+  const line = document.getElementById("in").value;
+  const parts = line.split(",");
+
+  const id = parseInt(parts[1], 16);
+  const data = parts.slice(6, 14).map(x => parseInt(x, 16));
+
+  const msg = dbc.find(m => m.id === id);
+
   const out = document.getElementById("out");
 
-  try {
-    // crude candump parse
-    const parts = input.split(",");
-    const id = parseInt(parts[1], 16);
-    const data = parts.slice(6, 14).map(x => parseInt(x, 16));
-
-    const msg = dbc.find(m => m.id === id);
-
-    if (!msg) {
-      out.textContent = "Unknown frame: 0x" + id.toString(16);
-      return;
-    }
-
-    let result = `Frame: ${msg.name} (0x${id.toString(16)})\n\n`;
-
-    msg.signals.forEach(sig => {
-      result += `Signal: ${sig.name} (start ${sig.start}, len ${sig.length})\n`;
-    });
-
-    out.textContent = result;
-
-  } catch (e) {
-    out.textContent = "Parse error: " + e;
+  if (!msg) {
+    out.textContent = "Unknown frame 0x" + id.toString(16);
+    return;
   }
+
+  out.textContent =
+    "Frame: " + msg.name + "\n" +
+    "ID: 0x" + id.toString(16) + "\n" +
+    "Bytes: " + data.join(" ");
 }
 EOF
 
-      # -----------------------------
-      # 4. Prepare Pages output folder
-      # -----------------------------
-      - name: Prepare Pages artifact
-        run: |
-          mkdir -p public
-          cp -r web/* public/
-
-      # -----------------------------
-      # 5. Upload Pages artifact
-      # -----------------------------
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public
+          path: web
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
+    environment:
+      name: github-pages
+
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         uses: actions/deploy-pages@v4
