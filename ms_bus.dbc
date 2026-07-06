@@ -11,38 +11,44 @@ BU_: Vector__XXX
 // See README.md for sourcing and confidence definitions.
 // Do not apply PSA or other-platform DBC labels to these frame IDs.
 
-BO_ 126 c_Keepalive_0x07E: 8 Vector__XXX
- SG_ c_FuelLevel_b4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 125 c_IgnitionState_0x07D: 8 Vector__XXX
- SG_ c_IgnitionStage_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 122 u_BusPresence_0x07A: 8 Vector__XXX
- SG_ u_Byte0_toggle : 0|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 223 u_StatusFlags_0x0DF: 8 Vector__XXX
- SG_ u_Byte0_status : 0|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 40 c_GearSelector_0x028: 8 Vector__XXX
+BO_ 40 i_MS_IPC_GearPosition_0x028: 8 Vector__XXX
  SG_ c_GearPosition : 32|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_LightSensor : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 104 c_FuelLevel_0x068: 8 Vector__XXX
+BO_ 104 c_MS_RSJB_FuelLevel_0x068: 8 Vector__XXX
  SG_ c_FuelLevel_raw : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
 
-BO_ 1299 i_FuelDisplayEnable_0x513: 8 Vector__XXX
- SG_ i_FDE_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ i_FDE_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ i_FDE_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+BO_ 122 u_MS_BusPresence_0x07A: 8 Vector__XXX
+ SG_ u_Byte0_toggle : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 520 i_ClimateControl_0x208: 8 Vector__XXX
+BO_ 125 c_MS_IgnitionState_0x07D: 8 Vector__XXX
+ SG_ c_IgnitionStage_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 126 c_MS_Keepalive_0x07E: 8 Vector__XXX
+ SG_ c_FuelLevel_b4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 136 c_MS_WakeTrigger_0x088: 8 Vector__XXX
+ SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 200 c_MS_IPC_Unknown_0x0C8: 8 Vector__XXX
+
+BO_ 223 u_MS_StatusFlags_0x0DF: 8 Vector__XXX
+ SG_ u_Byte0_status : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 264 c_MS_IPC_Unknown_0x108: 8 Vector__XXX
+BO_ 360 c_MS_IPC_Unknown_0x168: 8 Vector__XXX
+BO_ 392 c_MS_IPC_Unknown_0x188: 8 Vector__XXX
+BO_ 472 c_MS_IPC_Unknown_0x1D8: 8 Vector__XXX
+
+
+BO_ 520 u_MS_ClimateControl_0x208: 8 Vector__XXX
  SG_ i_RearHeater : 17|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_AutoMode : 29|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_Defrost : 30|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_FrontHeater : 31|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_Recirculation : 37|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 680 i_BCMSettings_0x2A8: 8 Vector__XXX
+BO_ 680 u_MS_BCMSettings_0x2A8: 8 Vector__XXX
  SG_ i_DriveAwayLocking : 32|3@1+ (1,0) [0|7] "" Vector__XXX
  SG_ i_AutoLock : 37|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_PassiveArming : 38|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -52,12 +58,64 @@ BO_ 680 i_BCMSettings_0x2A8: 8 Vector__XXX
  SG_ i_GlobalWindowsClose : 45|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_GlobalWindowsOpen : 46|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 136 c_HSWakeTrigger_0x088: 8 Vector__XXX
- SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+BO_ 840 c_MS_IPC_Unknown_0x348: 8 Vector__XXX
+BO_ 888 c_MS_IPC_Unknown_0x378: 8 Vector__XXX
+BO_ 904 c_MS_IPC_Unknown_0x388: 8 Vector__XXX
 
-CM_ BO_ 126 "c_Keepalive: Bench confirmed mandatory. ~50ms interval. Must be continuously transmitted, not log-replayed (rolling counter breaks at loop boundary).";
-CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
+
+BO_ 918 u_MS_WarningState_0x396: 8 Vector__XXX
+ SG_ i_Warning_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 919 c_MS_IPC_Unknown_0x397: 8 Vector__XXX
+ SG_ i_Warning_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 956 c_MS_IPC_Unknown_0x3BC: 8 Vector__XXX
+BO_ 968 c_MS_IPC_Unknown_0x3C8: 8 Vector__XXX
+
+
+BO_ 1024 c_MS_CCF_Block1_0x400: 8 Vector__XXX
+ SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1025 c_MS_CCF_Block2_0x401: 8 Vector__XXX
+ SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1226 c_MS_IPC_Unknown_0x4CA: 8 Vector__XXX
+BO_ 1257 c_MS_IPC_Unknown_0x4E9: 8 Vector__XXX
+
+BO_ 1281 c_MS_IPC_Unknown_0x501: 8 Vector__XXX
+BO_ 1283 c_MS_RCC_Status_0x503: 8 Vector__XXX
+BO_ 1284 c_MS_DDCU_Status_0x504: 8 Vector__XXX
+BO_ 1285 c_MS_PDCU_Status_0x505: 8 Vector__XXX
+BO_ 1288 c_MS_KVM_Status_0x508: 8 Vector__XXX
+BO_ 1291 c_MS_DSM_Status_0x50B: 8 Vector__XXX
+BO_ 1292 c_MS_ICM_Status_0x50C: 8 Vector__XXX
+BO_ 1295 c_MS_ICP_Status_0x50F: 8 Vector__XXX
+BO_ 1297 c_MS_IPC_Unknown_0x511: 8 Vector__XXX
+BO_ 1299 c_MS_RSJB_Status_0x513: 8 Vector__XXX
+ SG_ i_FDE_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FDE_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FDE_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
 CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
-CM_ BO_ 104 "c_FuelLevel: Bench confirmed, 5 calibration points (33/50/66/75/80%). Bytes 3-4 LE uint16. Pairs with 0x513 for needle movement.";
-CM_ BO_ 1299 "i_FuelDisplayEnable: Required for fuel needle display. 40s averaging delay after first seen. Not yet independently bench-confirmed on this project's hardware.";
-CM_ BO_ 136 "c_HSWakeTrigger: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only.";
+
+CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %%): 5259=33%%, 13370=50%%, 25657=66%%, 28220=75%%, 35604=80%%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay). Source: candump-2019-11-01_185625.log + candumpStartup.log + bench test. NEW CROSS-DEPENDENCY (in progress): replaying candump-2020-04-24_130328.log on MS alongside this project's own 0x068 (this frame is NOT present in that log dump) set 5 modules to CONNECTED. Removing 0x068 from the mix while still replaying the log dropped those same 5 modules back to MISSING -- confirms 0x068 is NECESSARY for this effect, but not yet known if it's SUFFICIENT alone, since the log dump's other frames were present throughout. Which 5 modules, and which specific companion frame(s) from the log are actually required alongside 0x068, are both still being isolated -- do not assume 0x068 alone explains this yet. MAJOR UPDATE: user reports ALL ETM module-status frames confirmed so far appear to be gated by this frame (0x068) -- not just the 5 originally observed. Working theory: 0x068 may function as a general "vehicle data valid / bus fully awake" precondition the cluster checks before evaluating ANY module status, rather than a fuel-specific signal -- consistent with RSJB (the module that actually owns fuel reporting, see 0x513) needing to be considered live before other modules are checked. Treat 0x068 as a baseline requirement alongside minimalKeepAlive.js for any module-status testing going forward.";
+CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
+CM_ BO_ 126 "c_Keepalive: Bench confirmed mandatory. ~50ms interval. Must be continuously transmitted, not log-replayed (rolling counter breaks at loop boundary).";
+CM_ BO_ 136 "c_HSWakeTrigger: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only. NEW FINDING: this frame also affects PIE, PATS, and TPMS module status in ETM — while 0x088 is actively being sent, PIE reads FAULTY; when 0x088 is stopped, PIE, PATS, and TPMS all move to WAITING (not FAULTY, not MISSING). Read as a cluster power-state effect rather than a fix for those modules: stopping the wake frame likely halts the cluster's active module-polling routine, so those modules simply haven't been queried yet (WAITING) rather than queried-and-failed (FAULTY). Do not stop 0x088 as a way of "clearing" these — they still need their own presence frames once the cluster is awake and polling normally.";
+
+CM_ BO_ 918 "u_WarningState_0x396: TX frame (not cluster-owned, corrected from an earlier guess). Direct bench test: RULED OUT for the tire pressure warning specifically -- no effect. Absent from the 52s clean dump (candump-2020-04-24_130142.log) regardless. Actual TPMS trigger is 0x401 (JLR CCF, see that message''s comment). Purpose of 0x396 itself remains unknown -- may relate to one of the other three warnings (front indicator/rear taillamp/blind spot) not yet individually tested.";
+CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
+
+CM_ BO_ 1024 "i_CCF_Block1_0x400: Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
+CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
+
+CM_ BO_ 1283 "c_RCC_Status_0x503: CONFIRMED by bench test -- drives RCC (Rear Climate Control) module status in ETM. Same FAULTY -> CONNECTED -> MISSING pattern seen across all module-status frames on this project. NOTE: 0x504/0x505 exist as SEPARATE, DIFFERENT frames on the HS bus (see hs_bus.dbc, ruled out for TPMS) -- CAN IDs are only unique per-bus, no conflict, just don''t confuse the two.";
+CM_ BO_ 1284 "c_DDCU_Status_0x504: CONFIRMED by bench test -- drives DDCU (Driver Door Control Unit) module status. Same pattern as other module-status frames. HISTORY: this ID was previously investigated as a TPMS candidate (comparing faulty vs clean MS candumps, a byte3 0x01-vs-0x03 difference was found but later confirmed CORRELATIONAL not causal -- ruled out for TPMS, the real TPMS trigger is 0x401/CCF). Confirmed now-superseding purpose: DDCU module status.";
+CM_ BO_ 1285 "c_PDCU_Status_0x505: CONFIRMED by bench test -- drives PDCU (Passenger Door Control Unit) module status. Same pattern as other module-status frames. HISTORY: same TPMS-candidate investigation as 0x504 (see that comment) -- ruled out for TPMS, confirmed now-superseding purpose: PDCU module status.";
+CM_ BO_ 1288 "c_KVM_Status_0x508: CONFIRMED by bench test -- drives KVM (Keyless Vehicle Module) status. Same pattern as other module-status frames.";
+CM_ BO_ 1291 "c_DSM_Status_0x50B: CONFIRMED by bench test -- drives DSM (Driver Seat Module) status. Same pattern as other module-status frames.";
+CM_ BO_ 1292 "c_ICM_Status_0x50C: CONFIRMED by bench test -- drives ICM (Infotainment Control Module) status. Same pattern as other module-status frames.";
+CM_ BO_ 1295 "c_ICP_Status_0x50F: CONFIRMED by bench test -- drives ICP (Integrated Control Panel) status. Same pattern as other module-status frames.";
+CM_ BO_ 1297 "c_ClusterOwned_Backlighting_0x511: CONFIRMED cluster-owned on MS bus -- DO NOT TRANSMIT. Initially misidentified as a "cluster backlighting" frame safe to send; user corrected this after further testing -- treat the same as 0x397/0x457/0x337 (risk of bus ID collision). NOTE: 0x511 also exists as a SEPARATE, different HS-bus frame (see hs_bus.dbc, i_HSInitState_0x511, init state machine, also cluster-owned/not for TX) -- CAN IDs are only unique per-bus, these are two distinct frames that happen to share a number, both cluster-owned on their respective buses.";
+CM_ BO_ 1299 "i_FuelDisplayEnable: Required for cluster to drive the fuel gauge needle -- without this frame the cluster ignores 0x068 fuel data. 40s averaging delay after first seen. SETTLED payload (both Rhys candumps): 01 02 00 0C 13 00 00 01. STARTUP payload also observed: 13 01 00 00 13 00 00 03 (init state, before settling). Transmit at ~50ms. Still i_ -- not yet independently bench-confirmed on this project''s hardware. Source: candump-2019-11-01_185625.log + candumpStartup.log. ETM BUG FOUND: Rolling Counts test shows FUEL as ''---'' (invalid/not received) while ODO shows a real value -- confirms the fuel rolling counter is not being satisfied. Current ms.js payloads for this frame are fully static (copied verbatim from single captured frames), with no incrementing counter anywhere -- very likely the actual gap. ALSO: ETM fuel RAW shows as two separate 8-bit values (255, 255 observed = both invalid/open-circuit per the official diagnostic chart), not a single 16-bit value -- this contradicts the byte3-4 LE uint16 model used for 0x068 and suggests RAW A/B may be two independent 8-bit channels instead. The 99.6% shown on the LCD during this same test is more likely coming from 0x07E''s simple byte4 mechanism (already running throughout this project) than from 0x068/0x513 at all -- the calibrated 0x068 work is unverified as actually feeding anything the cluster trusts yet. UPDATE: RAW subsequently observed as 235, 255 (was 255, 255) -- one channel now reads a plausible in-range value (10-254 = normal per the official diagnostic chart), the other still invalid. Cause of the change not yet identified -- worth retesting deliberately rather than assuming causation from other changes made in between. MAJOR UPDATE: enabling 0x4D5 (ECM status, see hs_bus.dbc) enabled the fuel rolling count in ETM -- this may fully explain the earlier invalid/---/broken rolling count without 0x513 needing an internal incrementing counter of its own. The static payloads here may be sufficient once 0x4D5 is part of the standard baseline -- worth retesting this frame in isolation now that 0x4D5 exists, before assuming a counter needs to be added here. CONFIRMED (separately) to drive RSJB (Rear Smart Junction Box) module status in ETM -- same FAULTY -> CONNECTED -> MISSING pattern. This likely explains the original fuel-display-enable finding: RSJB is the module that actually reads/reports fuel sensor data in this architecture, so its presence being confirmed is plausibly WHY fuel needle movement depends on this frame, rather than this frame being a fuel-specific enable in its own right.";
