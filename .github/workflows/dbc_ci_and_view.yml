@@ -1,0 +1,178 @@
+name: DBC CI + Web Viewer
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.dbc'
+
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.dbc'
+
+  workflow_dispatch:
+  
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install deps
+      run: pip install cantools jinja2
+
+    # ----------------------------
+    # 1. Convert DBC → JSON model
+    # ----------------------------
+    - name: Parse DBC files
+      run: |
+        python << 'EOF'
+        import cantools, json, glob, os
+
+        os.makedirs("site/data", exist_ok=True)
+
+        all_dbs = []
+
+        for file in glob.glob("**/*.dbc", recursive=True):
+            db = cantools.database.load_file(file)
+
+            db_json = {
+                "file": file,
+                "messages": []
+            }
+
+            for msg in db.messages:
+                m = {
+                    "id": msg.frame_id,
+                    "name": msg.name,
+                    "dlc": msg.length,
+                    "signals": []
+                }
+
+                for sig in msg.signals:
+                    m["signals"].append({
+                        "name": sig.name,
+                        "start": sig.start,
+                        "length": sig.length,
+                        "factor": sig.scale,
+                        "offset": sig.offset,
+                        "min": sig.minimum,
+                        "max": sig.maximum,
+                        "unit": sig.unit
+                    })
+
+                db_json["messages"].append(m)
+
+            out = f"site/data/{os.path.basename(file)}.json"
+            with open(out, "w") as f:
+                json.dump(db_json, f, indent=2)
+
+            all_dbs.append(db_json)
+
+        with open("site/data/index.json", "w") as f:
+            json.dump(all_dbs, f, indent=2)
+        EOF
+
+    # ----------------------------
+    # 2. Build HTML viewer
+    # ----------------------------
+    - name: Build Web Viewer
+      run: |
+        mkdir -p site
+
+        cat > site/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>CAN DBC Viewer</title>
+          <style>
+            body { font-family: Arial; margin: 20px; }
+            input { padding: 8px; width: 300px; }
+            .msg { border: 1px solid #ccc; margin: 10px; padding: 10px; }
+            .sig { margin-left: 20px; font-family: monospace; }
+          </style>
+        </head>
+        <body>
+
+        <h1>CAN DBC Viewer</h1>
+        <input id="search" placeholder="Search message or signal..." />
+
+        <div id="content"></div>
+
+        <script>
+        let db;
+
+        fetch('data/index.json')
+          .then(r => r.json())
+          .then(data => {
+            db = data;
+            render();
+          });
+
+        function render(filter="") {
+          let html = "";
+
+          db.forEach(file => {
+            file.messages.forEach(m => {
+
+              if (filter &&
+                  !m.name.toLowerCase().includes(filter) &&
+                  !JSON.stringify(m.signals).toLowerCase().includes(filter)) {
+                return;
+              }
+
+              html += `<div class="msg">
+                <b>${m.name}</b> (0x${m.id.toString(16)})
+                <div>DLC: ${m.dlc}</div>`;
+
+              m.signals.forEach(s => {
+                html += `<div class="sig">
+                  ${s.name} : ${s.start}|${s.length} scale=${s.factor}
+                </div>`;
+              });
+
+              html += `</div>`;
+            });
+          });
+
+          document.getElementById("content").innerHTML = html;
+        }
+
+        document.getElementById("search").addEventListener("input", e => {
+          render(e.target.value.toLowerCase());
+        });
+        </script>
+
+        </body>
+        </html>
+        EOF
+
+    # ----------------------------
+    # 3. Upload Pages artifact
+    # ----------------------------
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
