@@ -79,6 +79,9 @@ BO_ 1024 c_MS_CCF_Block1_0x400: 8 Vector__XXX
 BO_ 1025 c_MS_CCF_Block2_0x401: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
+ SG_ Vehicle_Battery_Voltage : 32|8@1+ (0.25,0) [0|63.75] "V" Vector__XXX
+
 BO_ 1226 c_MS_IPC_Unknown_0x4CA: 8 Vector__XXX
 BO_ 1257 c_MS_IPC_Unknown_0x4E9: 8 Vector__XXX
 

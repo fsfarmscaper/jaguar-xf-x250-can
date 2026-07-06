@@ -55,10 +55,11 @@ BO_ 580 u_HS_NightLight_0x244: 8 Vector__XXX
 BO_ 592 c_HS_IPC_Unknown_0x250: 8 Vector__XXX
 
 BO_ 599 i_HS_IPC_RTCClock_0x257: 8 Vector__XXX
- SG_ c_RTC_Hour : 24|8@1+ (1,0) [0|23] "h" Vector__XXX
- SG_ c_RTC_Minute : 32|8@1+ (1,0) [0|59] "min" Vector__XXX
- SG_ c_RTC_Second : 40|8@1+ (1,0) [0|59] "s" Vector__XXX
- SG_ c_RTC_SubSecCounter : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RTC_FrameCounter : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RTC_Day          : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RTC_Month        : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RTC_Check        : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ RTC_Status       : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 661 c_HS_ECM_RPM_0x295: 8 Vector__XXX
  SG_ c_RPM_Raw : 48|16@0+ (1,0) [0|8191] "rpm" Vector__XXX
