@@ -11,6 +11,8 @@ on:
     paths:
       - '**.dbc'
 
+  workflow_dispatch:
+  
 permissions:
   contents: write
   pages: write
