@@ -1,14 +1,20 @@
-name: DBC Web UI Builder
+name: DBC CI + Web Viewer
 
 on:
   push:
     branches: [ main ]
     paths:
-      - "**.dbc"
-  workflow_dispatch:
+      - '**.dbc'
 
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.dbc'
+
+  workflow_dispatch:
+  
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -17,122 +23,156 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+    - name: Checkout
+      uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
 
-      - name: Install dependencies
-        run: pip install cantools
+    - name: Install deps
+      run: pip install cantools jinja2
 
-      - name: Validate DBC syntax
-        run: |
-          for file in $(find . -name "*.dbc"); do
-            python -m cantools dump "$file" > /dev/null
-          done
+    # ----------------------------
+    # 1. Convert DBC → JSON model
+    # ----------------------------
+    - name: Parse DBC files
+      run: |
+        python << 'EOF'
+        import cantools, json, glob, os
 
-      - name: Build DBC JSON
-        run: |
-          mkdir -p web
-          python - << 'EOF'
-import cantools, json, glob
+        os.makedirs("site/data", exist_ok=True)
 
-dbcs = glob.glob("**/*.dbc", recursive=True)
+        all_dbs = []
 
-msgs = []
+        for file in glob.glob("**/*.dbc", recursive=True):
+            db = cantools.database.load_file(file)
 
-for f in dbcs:
-    db = cantools.database.load_file(f)
-    for m in db.messages:
-        msgs.append({
-            "name": m.name,
-            "id": m.frame_id,
-            "len": m.length,
-            "signals": [
-                {
-                    "name": s.name,
-                    "start": s.start,
-                    "length": s.length,
-                    "scale": s.scale,
-                    "offset": s.offset
-                } for s in m.signals
-            ]
-        })
+            db_json = {
+                "file": file,
+                "messages": []
+            }
 
-with open("web/dbc.json", "w") as f:
-    json.dump(msgs, f, indent=2)
-EOF
+            for msg in db.messages:
+                m = {
+                    "id": msg.frame_id,
+                    "name": msg.name,
+                    "dlc": msg.length,
+                    "signals": []
+                }
 
-      - name: Create Web UI
-        run: |
-          mkdir -p web
+                for sig in msg.signals:
+                    m["signals"].append({
+                        "name": sig.name,
+                        "start": sig.start,
+                        "length": sig.length,
+                        "factor": sig.scale,
+                        "offset": sig.offset,
+                        "min": sig.minimum,
+                        "max": sig.maximum,
+                        "unit": sig.unit
+                    })
 
-          cat > web/index.html << 'EOF'
-<!doctype html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>CAN DBC Viewer</title>
-</head>
-<body>
-<h2>CAN Decoder</h2>
+                db_json["messages"].append(m)
 
-<textarea id="in" style="width:100%;height:120px;"></textarea>
-<br>
-<button onclick="decode()">Decode</button>
+            out = f"site/data/{os.path.basename(file)}.json"
+            with open(out, "w") as f:
+                json.dump(db_json, f, indent=2)
 
-<pre id="out"></pre>
+            all_dbs.append(db_json)
 
-<script src="app.js"></script>
-</body>
-</html>
-EOF
+        with open("site/data/index.json", "w") as f:
+            json.dump(all_dbs, f, indent=2)
+        EOF
 
-          cat > web/app.js << 'EOF'
-let dbc = [];
+    # ----------------------------
+    # 2. Build HTML viewer
+    # ----------------------------
+    - name: Build Web Viewer
+      run: |
+        mkdir -p site
 
-fetch("dbc.json")
-  .then(r => r.json())
-  .then(d => dbc = d);
+        cat > site/index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>CAN DBC Viewer</title>
+          <style>
+            body { font-family: Arial; margin: 20px; }
+            input { padding: 8px; width: 300px; }
+            .msg { border: 1px solid #ccc; margin: 10px; padding: 10px; }
+            .sig { margin-left: 20px; font-family: monospace; }
+          </style>
+        </head>
+        <body>
 
-function decode() {
-  const line = document.getElementById("in").value;
-  const parts = line.split(",");
+        <h1>CAN DBC Viewer</h1>
+        <input id="search" placeholder="Search message or signal..." />
 
-  const id = parseInt(parts[1], 16);
-  const data = parts.slice(6, 14).map(x => parseInt(x, 16));
+        <div id="content"></div>
 
-  const msg = dbc.find(m => m.id === id);
+        <script>
+        let db;
 
-  const out = document.getElementById("out");
+        fetch('data/index.json')
+          .then(r => r.json())
+          .then(data => {
+            db = data;
+            render();
+          });
 
-  if (!msg) {
-    out.textContent = "Unknown frame 0x" + id.toString(16);
-    return;
-  }
+        function render(filter="") {
+          let html = "";
 
-  out.textContent =
-    "Frame: " + msg.name + "\n" +
-    "ID: 0x" + id.toString(16) + "\n" +
-    "Bytes: " + data.join(" ");
-}
-EOF
+          db.forEach(file => {
+            file.messages.forEach(m => {
 
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: web
+              if (filter &&
+                  !m.name.toLowerCase().includes(filter) &&
+                  !JSON.stringify(m.signals).toLowerCase().includes(filter)) {
+                return;
+              }
+
+              html += `<div class="msg">
+                <b>${m.name}</b> (0x${m.id.toString(16)})
+                <div>DLC: ${m.dlc}</div>`;
+
+              m.signals.forEach(s => {
+                html += `<div class="sig">
+                  ${s.name} : ${s.start}|${s.length} scale=${s.factor}
+                </div>`;
+              });
+
+              html += `</div>`;
+            });
+          });
+
+          document.getElementById("content").innerHTML = html;
+        }
+
+        document.getElementById("search").addEventListener("input", e => {
+          render(e.target.value.toLowerCase());
+        });
+        </script>
+
+        </body>
+        </html>
+        EOF
+
+    # ----------------------------
+    # 3. Upload Pages artifact
+    # ----------------------------
+    - name: Upload Pages artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: site
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
-    environment:
-      name: github-pages
-
     steps:
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
