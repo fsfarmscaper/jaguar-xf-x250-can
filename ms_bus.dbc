@@ -79,8 +79,61 @@ BO_ 1024 c_MS_CCF_Block1_0x400: 8 Vector__XXX
 BO_ 1025 c_MS_CCF_Block2_0x401: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 1028 Vehicle_Status_404: 8 Vector__XXX
+ SG_ Mux_404 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Status_01_Value_2 m1 : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
+
+ SG_ Vehicle_Battery_Voltage m2 : 32|8@1+ (0.25,0) [0|63.75] "V" Vector__XXX
+
+ SG_ VIN_SEGMENT_10_1 m16 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_2 m16 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_3 m16 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_4 m16 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_5 m16 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_6 m16 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_7 m16 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ VIN_SEGMENT_11_1 m17 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_2 m17 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_3 m17 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_4 m17 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_5 m17 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_6 m17 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_7 m17 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ VIN_SEGMENT_12_1 m18 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
 BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
- SG_ Vehicle_Battery_Voltage : 32|8@1+ (0.25,0) [0|63.75] "V" Vector__XXX
+ SG_ Mux_405 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ Status_01_Value_2 m1 : 32|16@1+ (1,0) [0|65535] "" Vector__XXX
+
+ SG_ Vehicle_Battery_Voltage m2 : 32|8@1+ (0.25,0) [0|63.75] "V" Vector__XXX
+
+ SG_ VIN_SEGMENT_10_1 m16 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_2 m16 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_3 m16 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_4 m16 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_5 m16 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_6 m16 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_10_7 m16 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ VIN_SEGMENT_11_1 m17 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_2 m17 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_3 m17 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_4 m17 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_5 m17 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_6 m17 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_11_7 m17 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ VIN_SEGMENT_12_1 m18 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 1226 c_MS_IPC_Unknown_0x4CA: 8 Vector__XXX
 BO_ 1257 c_MS_IPC_Unknown_0x4E9: 8 Vector__XXX
@@ -112,6 +165,8 @@ CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as 
 
 CM_ BO_ 1024 "i_CCF_Block1_0x400: Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
 CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
+CM_ BO_ 1029 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
+CM_ BO_ 1028 "JLR Vehicle Status 0x405 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
 
 CM_ BO_ 1283 "c_RCC_Status_0x503: CONFIRMED by bench test -- drives RCC (Rear Climate Control) module status in ETM. Same FAULTY -> CONNECTED -> MISSING pattern seen across all module-status frames on this project. NOTE: 0x504/0x505 exist as SEPARATE, DIFFERENT frames on the HS bus (see hs_bus.dbc, ruled out for TPMS) -- CAN IDs are only unique per-bus, no conflict, just don''t confuse the two.";
 CM_ BO_ 1284 "c_DDCU_Status_0x504: CONFIRMED by bench test -- drives DDCU (Driver Door Control Unit) module status. Same pattern as other module-status frames. HISTORY: this ID was previously investigated as a TPMS candidate (comparing faulty vs clean MS candumps, a byte3 0x01-vs-0x03 difference was found but later confirmed CORRELATIONAL not causal -- ruled out for TPMS, the real TPMS trigger is 0x401/CCF). Confirmed now-superseding purpose: DDCU module status.";
