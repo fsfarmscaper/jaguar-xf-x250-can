@@ -15,25 +15,24 @@ BO_ 40 i_MS_IPC_GearPosition_0x028: 8 Vector__XXX
  SG_ c_GearPosition : 32|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_LightSensor : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
+ SG_ i_RSJB_StatusByte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_RSJB_StatusByte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ u_RSJB_Unknown_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ u_RSJB_Unknown_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FuelSender1_raw : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ i_FuelSender2_raw : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ u_RSJB_Unknown_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ u_RSJB_Unknown_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
 BO_ 104 c_MS_RSJB_FuelLevel_0x068: 8 Vector__XXX
  SG_ c_FuelLevel_raw : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
-
-BO_ 122 u_MS_BusPresence_0x07A: 8 Vector__XXX
- SG_ u_Byte0_toggle : 0|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 125 c_MS_IgnitionState_0x07D: 8 Vector__XXX
- SG_ c_IgnitionStage_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
-
-BO_ 126 c_MS_Keepalive_0x07E: 8 Vector__XXX
- SG_ c_FuelLevel_b4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 136 c_MS_WakeTrigger_0x088: 8 Vector__XXX
  SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 200 c_MS_IPC_Unknown_0x0C8: 8 Vector__XXX
-
-BO_ 223 u_MS_StatusFlags_0x0DF: 8 Vector__XXX
- SG_ u_Byte0_status : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 264 c_MS_IPC_Unknown_0x108: 8 Vector__XXX
 BO_ 360 c_MS_IPC_Unknown_0x168: 8 Vector__XXX
@@ -58,6 +57,24 @@ BO_ 680 u_MS_BCMSettings_0x2A8: 8 Vector__XXX
  SG_ i_GlobalWindowsClose : 45|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_GlobalWindowsOpen : 46|1@1+ (1,0) [0|1] "" Vector__XXX
 
+BO_ 824 TPMS_ETM_Status_0x338: 8 Vector__XXX
+
+ SG_ TPMS_Cluster_Indicator_6x_Flashes      : 54|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_System_Fault_LCD                  : 53|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Sensor_Fault_LCD                  : 52|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Low_For_Speed_LCD                 : 51|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Cluster_Indicator_On              : 50|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Front_LH       : 49|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Front_LH_LCD       : 48|1@1+ (1,0) [0|1] "" Vector__XXX
+
+ SG_ TPMS_Tire_Not_Monitored_Front_RH       : 63|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Front_RH_LCD       : 62|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Rear_LH        : 61|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Rear_LH_LCD        : 60|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Rear_RH        : 59|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Rear_RH_LCD        : 58|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Spare_LCD          : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+
 BO_ 840 c_MS_IPC_Unknown_0x348: 8 Vector__XXX
 BO_ 888 c_MS_IPC_Unknown_0x378: 8 Vector__XXX
 BO_ 904 c_MS_IPC_Unknown_0x388: 8 Vector__XXX
@@ -79,7 +96,7 @@ BO_ 1024 c_MS_CCF_Block1_0x400: 8 Vector__XXX
 BO_ 1025 c_MS_CCF_Block2_0x401: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1028 Vehicle_Status_404: 8 Vector__XXX
+BO_ 1028 Vehicle_Status_0x404: 8 Vector__XXX
  SG_ Mux_404 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
  SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -107,7 +124,7 @@ BO_ 1028 Vehicle_Status_404: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
+BO_ 1029 Vehicle_Status_0x405: 8 Vector__XXX
  SG_ Mux_405 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
  SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -154,6 +171,7 @@ BO_ 1299 c_MS_RSJB_Status_0x513: 8 Vector__XXX
 
 
 CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
+CM_ BO_ 72 "c_MS_RSJB_Status_Raw_0x048: Provisional reverse engineering. Frame observed from multiple vehicles. Appears to originate from RSJB (Rear Junction Box). Byte4 and Byte5 are believed to be raw fuel sender ADC values (8-bit each). Confirmed examples: 0x39/0xFE, 0x3D/0xFE, 0x3F/0x82, 0x40/0x81 correspond with processed fuel values transmitted in 0x068. Byte0/Byte1 are currently unknown status fields. Observation across two vehicles: Byte0 value FE dominates (~80% of frames) while FF occurs ~20% of frames. When Byte0=FF, Byte1 is typically 0x80; when Byte0=FE, Byte1 is typically 0x00. Pattern is periodic and independent of fuel sender changes, suggesting an alive indicator, rolling status bit, sample-valid marker, or message state field. Do not assume FE/FF represents fuel data. Byte2/Byte3/Byte6/Byte7 remain unidentified. Source: multi-vehicle candump analysis.";
 
 CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %%): 5259=33%%, 13370=50%%, 25657=66%%, 28220=75%%, 35604=80%%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay). Source: candump-2019-11-01_185625.log + candumpStartup.log + bench test. NEW CROSS-DEPENDENCY (in progress): replaying candump-2020-04-24_130328.log on MS alongside this project's own 0x068 (this frame is NOT present in that log dump) set 5 modules to CONNECTED. Removing 0x068 from the mix while still replaying the log dropped those same 5 modules back to MISSING -- confirms 0x068 is NECESSARY for this effect, but not yet known if it's SUFFICIENT alone, since the log dump's other frames were present throughout. Which 5 modules, and which specific companion frame(s) from the log are actually required alongside 0x068, are both still being isolated -- do not assume 0x068 alone explains this yet. MAJOR UPDATE: user reports ALL ETM module-status frames confirmed so far appear to be gated by this frame (0x068) -- not just the 5 originally observed. Working theory: 0x068 may function as a general vehicle data valid / bus fully awake precondition the cluster checks before evaluating ANY module status, rather than a fuel-specific signal -- consistent with RSJB (the module that actually owns fuel reporting, see 0x513) needing to be considered live before other modules are checked. Treat 0x068 as a baseline requirement alongside minimalKeepAlive.js for any module-status testing going forward.";
 CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
@@ -164,7 +182,18 @@ CM_ BO_ 918 "u_WarningState_0x396: TX frame (not cluster-owned, corrected from a
 CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
 
 CM_ BO_ 1024 "i_CCF_Block1_0x400: Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
-CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
+CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. 
+  Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). 
+  CONFIRMED by direct bench test: this frame creates and clears warnings by setting the system with fault to disabled
+  MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations.
+  This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. 
+  NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. 
+
+  Blind Spot Monitor Not Available: byte0 = 0x1C, byte3 = mask 0x80
+  Tire Pressure System Fault:  byte0 = 0x1C, byte3 = mask 0x02
+  Steering Column Lock: byte0 = 0x08, byte2 = mask 0x04
+  Check Pedestrian System: byte0 = 0x17, byte 6 = mask 0x80
+  These are the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
 CM_ BO_ 1029 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
 CM_ BO_ 1028 "JLR Vehicle Status 0x405 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
 

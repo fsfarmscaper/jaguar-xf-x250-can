@@ -78,13 +78,55 @@ BO_ 672 i_HS_GSM_KnobStatus_0x2A0: 8 Vector__XXX
  SG_ i_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 712 c_HS_ADCM_ETM_Status_0x2C8: 8 Vector__XXX
+//BO_ 712 JLR_Dynamic_Mode_Status: 8 JLR_UNKNOWN
+    SG_ JLR_2C8_Mode_State : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_Status_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_Reserved_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_Config_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_State_LSB : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_State_MSB : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_Reserved_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+    SG_ JLR_2C8_Checksum_Alive : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
+CM_ BO_ 712 "Jaguar/Land Rover HS-CAN message 0x2C8. Reverse engineered from X250/X351 captures. Observed ~15ms periodic rate. Associated with Dynamic Mode activation according to Canny 7.2 capture. Exact transmitter ECU and signal definitions unconfirmed.";
+
+CM_ SG_ 712 JLR_2C8_Mode_State "Byte0. Appears to contain a state/multiplexer value on some vehicles. Observed values: 0xBF,0xC0,0xC1,0xC2,0xC3,0xC8,0xC9,0xCA,0xCB.";
+
+CM_ SG_ 712 JLR_2C8_Status_Byte1 "Byte1. Changes correlated with Byte5 in captured datasets. Candidate mode/state field.";
+
+CM_ SG_ 712 JLR_2C8_Config_Byte3 "Byte3. Constant 0xC5 in supplied capture. Function unknown.";
+
+CM_ SG_ 712 JLR_2C8_State_LSB "Byte4. Used together with Byte5 in Canny Dynamic Mode detection logic (D5:D4 comparison).";
+
+CM_ SG_ 712 JLR_2C8_State_MSB "Byte5. Used together with Byte4 in Canny Dynamic Mode detection logic. Suspected Dynamic Mode state byte.";
+
+CM_ SG_ 712 JLR_2C8_Checksum_Alive "Byte7. Mostly constant (0xBD in supplied captures). Possible checksum/alive/status byte.";
+
+
+//VAL_ 712 JLR_2C8_Mode_State
+//    0xBF "Observed_State_A"
+//    0xC0 "Observed_State_B"
+//    0xC1 "Observed_State_C"
+//    0xC2 "Observed_State_D"
+//    0xC3 "Observed_State_E"
+//    0xC8 "Observed_State_F"
+//    0xC9 "Observed_State_G"
+//    0xCA "Observed_State_H"
+//    0xCB "Observed_State_I";
+
 
 BO_ 786 i_HS_GSM_SelectorLock_0x312: 8 Vector__XXX
  SG_ i_LockState_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_GearFlag_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 823 c_HS_IPC_DoorStatus_0x337: 8 Vector__XXX
- SG_ i_AllDoorsClosed_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Door_Front_Left_Closed    : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Door_Front_Right_Closed   : 17|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Door_Rear_Left_Closed     : 18|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Door_Rear_Right_Closed    : 19|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Trunk_Closed              : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ Hood_Closed               : 21|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 863 c_HS_ACC_ETM_Status_0x35F: 8 Vector__XXX
 
@@ -183,6 +225,10 @@ BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 1029 c_HS_IPC_CCF_Relay_From_MS_0x401_To_HS_0x407: 8 Vector__XXX
+
+BO_ 1117 u_HS_IPC_Unknown_0x41D: 8 Vector__XXX
+
 BO_ 1058 c_HS_GSM_ETM_Status_0x422: 8 Vector__XXX
 
 BO_ 1111 u_HS_IPC_Unknown_0x457: 8 Vector__XXX
@@ -242,12 +288,16 @@ CM_ BO_ 975 "c_AFLS_Status_0x3CF: CONFIRMED by bench test -- drives AFLS (Adapti
 
 CM_ BO_ 1003 "c_DSC_ABS_Status: CONFIRMED by bench test. Payload 01 01 60 00 00 00 00 00 suppresses ABS, ESP, and DSC warning lights simultaneously. byte1=0x01 (DSC on), byte2=0x60 (ABS OK combo bits 0x40|0x20). byte0=0x01 -- unclear if this value matters or if it still works with byte0=0x00 / a rolling counter, not isolated yet. Individual ESP-active/ESP-flash/ABS-fault bits are inferred from RR/XJ docs, not independently toggled/tested -- only the combined suppress-everything payload has been bench-verified. ''stability control not available'' bit (RR notation '1.07') is ambiguous -- the mask/bit convention doesn't match the rest of this doc's notation and would overlap the confirmed DSC_State field if taken as mask 0x07 -- deliberately not modeled here pending clarification. Beep bit (0x80, byte2) effect unknown. NEW DATA POINT (VanGogh, forums.moderndaymods.com ''Gear Shift Module (GSM)'' thread -- VanGogh is a DIFFERENT person from Tom-evnut, the gear-knob repo author; both were active in the same openinverter.org GSM thread but are separate contributors): a simple table gives byte1=0x00, byte2=0xAA as ''LED DSC off'' and byte1=0x00, byte2=0x00 as ''LED DSC on'' -- rest of payload zero in both. This does NOT obviously reconcile with our own bench-confirmed suppress-everything combo (byte1=0x01, byte2=0x60) -- 0xAA (1010 1010) shares no bits with 0x60 (0110 0000). Possible explanations: (a) ''LED DSC'' in that table refers to a physical DSC-OFF button indicator on the console/GSM module, not the cluster''s ABS/DSC warning icons -- a different consumer of the same ID; (b) byte2 is a small enum rather than independent bits and both data points are correct for different things it controls. Not yet bench-tested against the XF250 cluster specifically -- worth an isolated test with byte1=0x00 and byte2=0xAA/0x00 to see what, if anything, changes on the cluster itself. PROVENANCE NOTE: the ''LED DSC on/off'' video evidence is from a separate physical module (the GSM/gear-shift-module console itself, with its own DSC button and backlight), tested standalone by a different person (VanGogh) ~3 years ago -- this project does not have that GSM hardware, only the XF250 cluster. Whether this byte2 value does anything to the CLUSTER''s own ABS/DSC warning icon (separate from the GSM button''s backlight) is unverified and can only be checked on our own bench, not inferred from that video. RE-CONFIRMED verbatim by the user''s own bench payload [0x00, 0x01, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00] -- byte2 mask 0x60 specifically turns off the ABS light (direct user confirmation, not just inferred from the RR/XJ combo table). MAJOR NEW FINDING: byte0 is NOT inert as previously assumed. Payload [0x01, 0x01, 0x60, 0x00, 0x00, 0x00, 0x00, 0x00] (byte0=0x01, vs the earlier confirmed byte0=0x00 combo) sets the digital speedo to 194 mph. In ETM mode, RAW speed drops from 0xFFFF+1/65536 (the invalid/no-data sentinel) to a fixed 30001 with this payload present -- but fuzzing bytes 4-7 does not change that value further, and it does not track anything dynamically. Working theory: this frame is MISSING A ROLLING COUNTER -- the cluster may accept it as a one-time valid snapshot (moving RAW off the invalid sentinel) but then holds that value rather than trusting continued live data, consistent with every other gating frame on this project needing a counter to be trusted as live (0x088, 0x295, 0x3F3, etc.). NOT yet resolved. Separately: RPM RAW was also observed at 65536 (invalid sentinel) in ETM during this same test -- 0x295 was likely not active in that test, not necessarily related to this byte0 finding, but flagged for the record. NEXT STEP: try adding a rolling counter to byte0 or another undetermined byte and see if RAW speed starts tracking instead of holding at a fixed value. ETM CONFIRMATION: Module Status test shows DSC as CONNECTED with this frame active -- direct confirmation this frame satisfies the DSC module presence check, not just the warning light.";
 CM_ BO_ 1011 "c_GearSelectorTester: ID is Tester-to-gear-selector (diagnostic/keep-alive style). CONFIRMED per-gear byte table, sourced from genuine facelift XF250 gear-knob candumps (Tom-evnut/Land-Rover-Gearknob repo -- main log 16205 rows, plus a dedicated Sport log and the author''s own findings spreadsheet) -- NOT cross-platform inference, this is the actual target platform:
+  TODO: Clean-up this table: b0.10 Must be set for no GB Fault, b1.04 Must be set for no GB Fault, b2.20 = Gearbox overheating, b2.b0 Manual Shift Disabled
   Park:    byte0=5C byte1=66 byte4=FF byte5=7F byte6=00 byte7=80
   Reverse: byte0=7C byte1=24 byte4=FE byte5=FF byte6=01 byte7=00
   Neutral: byte0=7C byte1=25 byte4=FD byte5=FF byte6=02 byte7=00
   Drive:   byte0=7C byte1=24 byte4=FB byte5=FF byte6=04 byte7=00
   Sport:   byte0=7C byte1=24 byte4=F7 byte5=FF byte6=08 byte7=00
-byte1=0x24 is shared by Reverse/Drive/Sport -- byte4/byte6 are what actually disambiguate them. NOTE: the author''s findings spreadsheet lists Drive byte6 as 0x03, but every raw sample in our own pulled logs shows byte6=0x04 for Drive, consistently -- treating the spreadsheet value as a likely transcription error and keeping the directly-observed 0x04. byte2 is a free-running counter (cycles 0x00-0x0E, 15-value wrap, matching the pattern seen elsewhere on this bus); byte3 = byte2 + a gear-dependent offset, CONFIRMED: Park=+0x82, Reverse=+0x03, Neutral=+0x04, Drive=+0x06, Sport=+0x0A. SUPERSEDES the earlier all-zero suppression test: all-zero clears the Gear Box Fault warning but does not match this table internally (byte6=0x00 reads Park, byte7=0x00 reads not-parked), so it likely doesn''t show a coherent gear on the LED. Use the confirmed per-gear values above instead -- a user-captured PARK frame on the bench (1C 26 00 82 FF 7F 00 80) already matched byte4/5/6/7 of this table and correctly set the LED to P. CROSS-CONFIRMED by a third independent source (SomersetEV/LandRover-rotary-gear-change, github.com/SomersetEV) with an identical byte table -- strong corroboration. That source labels this ID ''from ECU'' (not tester-to-selector) -- functionally the ECU broadcasts gear state and the selector module raises its knob and lights the indicator in response, which is the role we''re emulating by transmitting it. FUNCTIONAL NOTES from that source: bytes 0, 4, 5, 6 must hold their gear-specific values to raise the knob; byte1 is explicitly NOT required for knob-raise and does not affect the light -- useful priority order if debugging. byte3''s per-gear cycle ranges are also given explicitly: Park 0x82-0x90, R 0x03-0x11, N 0x04-0x12, D 0x06-0x14, S 0x0A-0x18 -- consistent with our confirmed byte3=byte2+offset formula. PROVENANCE NOTE: the ''raises knob''/''light'' functional notes in this comment describe the GSM console''s own physical knob and button backlights, on hardware this project doesn''t have -- source is third-party documentation/video, not our own bench. The gear-state byte values themselves are still directly useful for driving the cluster''s own gear display, which IS bench-verified (the user-captured PARK frame correctly set the cluster LED to P).";
+byte1=0x24 is shared by Reverse/Drive/Sport -- byte4/byte6 are what actually disambiguate them. byte2 upper nibble is status, lower nibble is a free-running counter (cycles 0x00-0x0E, 15-value wrap, matching the pattern seen elsewhere on this bus); byte3 = byte2 + a gear-dependent offset, CONFIRMED: Park=+0x82, Reverse=+0x03, Neutral=+0x04, Drive=+0x06, Sport=+0x0A. -- a user-captured PARK frame on the bench (1C 26 00 82 FF 7F 00 80) already matched byte4/5/6/7 of this table and correctly set the LED to P. CROSS-CONFIRMED by a third independent source (SomersetEV/LandRover-rotary-gear-change, github.com/SomersetEV) with an identical byte table -- strong corroboration. That source labels this ID ''from ECU'' (not tester-to-selector) -- functionally the ECU broadcasts gear state and the selector module raises its knob and lights the indicator in response, which is the role we''re emulating by transmitting it. FUNCTIONAL NOTES from that source: bytes 0, 4, 5, 6 must hold their gear-specific values to raise the knob; byte1 is explicitly NOT required for knob-raise and does not affect the light -- useful priority order if debugging. byte3''s per-gear cycle ranges are also given explicitly: Park 0x82-0x90, R 0x03-0x11, N 0x04-0x12, D 0x06-0x14, S 0x0A-0x18 -- consistent with our confirmed byte3=byte2+offset formula. PROVENANCE NOTE: the ''raises knob''/''light'' functional notes in this comment describe the GSM console''s own physical knob and button backlights, on hardware this project doesn''t have -- source is third-party documentation/video, not our own bench. The gear-state byte values themselves are still directly useful for driving the cluster''s own gear display, which IS bench-verified (the user-captured PARK frame correctly set the cluster LED to P).";
+
+
+
 CM_ BO_ 1024 "i_CCF_Block1_0x400: Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
 CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
 CM_ BO_ 1029 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
