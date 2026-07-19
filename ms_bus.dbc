@@ -26,8 +26,12 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
  SG_ u_RSJB_Unknown_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
 
-BO_ 104 c_MS_RSJB_FuelLevel_0x068: 8 Vector__XXX
- SG_ c_FuelLevel_raw : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
+BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
+ SG_ c_FuelLevel_raw             : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_IPC_MainBeamIndicator     : 57|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SidelightsIndicator   : 59|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SidelightsGate        : 60|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_AutoHeadlightsIndicator : 62|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 136 c_MS_WakeTrigger_0x088: 8 Vector__XXX
  SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -173,7 +177,20 @@ BO_ 1299 c_MS_RSJB_Status_0x513: 8 Vector__XXX
 CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
 CM_ BO_ 72 "c_MS_RSJB_Status_Raw_0x048: Provisional reverse engineering. Frame observed from multiple vehicles. Appears to originate from RSJB (Rear Junction Box). Byte4 and Byte5 are believed to be raw fuel sender ADC values (8-bit each). Confirmed examples: 0x39/0xFE, 0x3D/0xFE, 0x3F/0x82, 0x40/0x81 correspond with processed fuel values transmitted in 0x068. Byte0/Byte1 are currently unknown status fields. Observation across two vehicles: Byte0 value FE dominates (~80% of frames) while FF occurs ~20% of frames. When Byte0=FF, Byte1 is typically 0x80; when Byte0=FE, Byte1 is typically 0x00. Pattern is periodic and independent of fuel sender changes, suggesting an alive indicator, rolling status bit, sample-valid marker, or message state field. Do not assume FE/FF represents fuel data. Byte2/Byte3/Byte6/Byte7 remain unidentified. Source: multi-vehicle candump analysis.";
 
-CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %%): 5259=33%%, 13370=50%%, 25657=66%%, 28220=75%%, 35604=80%%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay). Source: candump-2019-11-01_185625.log + candumpStartup.log + bench test. NEW CROSS-DEPENDENCY (in progress): replaying candump-2020-04-24_130328.log on MS alongside this project's own 0x068 (this frame is NOT present in that log dump) set 5 modules to CONNECTED. Removing 0x068 from the mix while still replaying the log dropped those same 5 modules back to MISSING -- confirms 0x068 is NECESSARY for this effect, but not yet known if it's SUFFICIENT alone, since the log dump's other frames were present throughout. Which 5 modules, and which specific companion frame(s) from the log are actually required alongside 0x068, are both still being isolated -- do not assume 0x068 alone explains this yet. MAJOR UPDATE: user reports ALL ETM module-status frames confirmed so far appear to be gated by this frame (0x068) -- not just the 5 originally observed. Working theory: 0x068 may function as a general vehicle data valid / bus fully awake precondition the cluster checks before evaluating ANY module status, rather than a fuel-specific signal -- consistent with RSJB (the module that actually owns fuel reporting, see 0x513) needing to be considered live before other modules are checked. Treat 0x068 as a baseline requirement alongside minimalKeepAlive.js for any module-status testing going forward.";
+CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %): 5259=33%, 13370=50%, 25657=66%, 28220=75%, 35604=80%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay).
+
+Byte 7 also carries multiple IPC indicator status bits:
+- b7.1 = Main beam indicator.
+- b7.3 = Sidelights indicator.
+- b7.4 = Gates b7.3 when asserted; likely represents the automatic lighting mode/state that enables the sidelights indicator.
+- b7.6 = Headlights auto indicator.
+
+Source: candump-2026-07-16_213719.log + candump-2019-11-01_185625.log + candumpStartup.log + bench test.
+
+NEW CROSS-DEPENDENCY (in progress): replaying candump-2020-04-24_130328.log on MS alongside this project's own 0x068 (this frame is NOT present in that log dump) set 5 modules to CONNECTED. Removing 0x068 from the mix while still replaying the log dropped those same 5 modules back to MISSING -- confirms 0x068 is NECESSARY for this effect, but not yet known if it's SUFFICIENT alone, since the log dump's other frames were present throughout. Which 5 modules, and which specific companion frame(s) from the log are actually required alongside 0x068, are both still being isolated -- do not assume 0x068 alone explains this yet.
+
+All MS bus ETM module-status frames confirmed so far appear to be gated by this frame (0x068). Working theory: 0x068 may function as a general vehicle data valid / bus fully awake precondition the cluster checks before evaluating ANY MS bus module status, rather than a fuel-specific signal -- consistent with RSJB (the module that actually owns fuel reporting, see 0x513) needing to be considered live before other modules are checked. Treat 0x068 as a baseline requirement alongside minimalKeepAlive.js for any module-status testing going forward.";
+
 CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
 CM_ BO_ 126 "c_Keepalive: Bench confirmed mandatory. ~50ms interval. Must be continuously transmitted, not log-replayed (rolling counter breaks at loop boundary).";
 CM_ BO_ 136 "c_HSWakeTrigger: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only. NEW FINDING: this frame also affects PIE, PATS, and TPMS module status in ETM — while 0x088 is actively being sent, PIE reads FAULTY; when 0x088 is stopped, PIE, PATS, and TPMS all move to WAITING (not FAULTY, not MISSING). Read as a cluster power-state effect rather than a fix for those modules: stopping the wake frame likely halts the cluster's active module-polling routine, so those modules simply haven't been queried yet (WAITING) rather than queried-and-failed (FAULTY). Do not stop 0x088 as a way of clearing these — they still need their own presence frames once the cluster is awake and polling normally.";
