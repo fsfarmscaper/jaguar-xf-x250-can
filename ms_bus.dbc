@@ -27,13 +27,14 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
 
 
 BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
- SG_ c_FuelLevel_raw             : 24|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_FuelLevel_raw             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_FuelLevel_raw             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ c_IPC_MainBeamIndicator     : 57|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsIndicator   : 59|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsGate        : 60|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_AutoHeadlightsIndicator : 62|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 136 c_MS_WakeTrigger_0x088: 8 Vector__XXX
+BO_ 136 c_MS_IgnitionStatus_0x088: 8 Vector__XXX
  SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 168 c_LateMY_Unknown_0x0A8: 8 Vector__XXX
@@ -223,9 +224,7 @@ NEW CROSS-DEPENDENCY (in progress): replaying candump-2020-04-24_130328.log on M
 
 All MS bus ETM module-status frames confirmed so far appear to be gated by this frame (0x068). Working theory: 0x068 may function as a general vehicle data valid / bus fully awake precondition the cluster checks before evaluating ANY MS bus module status, rather than a fuel-specific signal -- consistent with RSJB (the module that actually owns fuel reporting, see 0x513) needing to be considered live before other modules are checked. Treat 0x068 as a baseline requirement alongside minimalKeepAlive.js for any module-status testing going forward.";
 
-CM_ BO_ 125 "c_IgnitionState: ~39ms interval. Byte 1 toggles 0x00/0x20 (ACC vs ON). Use 0x20 for ignition-on on bench.";
-CM_ BO_ 126 "c_Keepalive: Bench confirmed mandatory. ~50ms interval. Must be continuously transmitted, not log-replayed (rolling counter breaks at loop boundary).";
-CM_ BO_ 136 "c_HSWakeTrigger: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only. NEW FINDING: this frame also affects PIE, PATS, and TPMS module status in ETM — while 0x088 is actively being sent, PIE reads FAULTY; when 0x088 is stopped, PIE, PATS, and TPMS all move to WAITING (not FAULTY, not MISSING). Read as a cluster power-state effect rather than a fix for those modules: stopping the wake frame likely halts the cluster's active module-polling routine, so those modules simply haven't been queried yet (WAITING) rather than queried-and-failed (FAULTY). Do not stop 0x088 as a way of clearing these — they still need their own presence frames once the cluster is awake and polling normally.";
+CM_ BO_ 136 "c_MS_IgnitionStatus_0x088: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only. NEW FINDING: this frame also affects PIE, PATS, and TPMS module status in ETM — while 0x088 is actively being sent, PIE reads FAULTY; when 0x088 is stopped, PIE, PATS, and TPMS all move to WAITING (not FAULTY, not MISSING). Read as a cluster power-state effect rather than a fix for those modules: stopping the wake frame likely halts the cluster's active module-polling routine, so those modules simply haven't been queried yet (WAITING) rather than queried-and-failed (FAULTY). Do not stop 0x088 as a way of clearing these — they still need their own presence frames once the cluster is awake and polling normally.";
 
 CM_ BO_ 918 "u_WarningState_0x396: TX frame (not cluster-owned, corrected from an earlier guess). Direct bench test: RULED OUT for the tire pressure warning specifically -- no effect. Absent from the 52s clean dump (candump-2020-04-24_130142.log) regardless. Actual TPMS trigger is 0x401 (JLR CCF, see that message''s comment). Purpose of 0x396 itself remains unknown -- may relate to one of the other three warnings (front indicator/rear taillamp/blind spot) not yet individually tested.";
 CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
