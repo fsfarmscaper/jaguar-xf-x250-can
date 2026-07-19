@@ -27,11 +27,11 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
 
 
 BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
- SG_ c_FuelLevel_raw             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ c_FuelLevel_raw             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ c_IPC_MainBeamIndicator     : 57|1@1+  (1,0) [0|1] "" Vector__XXX
- SG_ c_IPC_SidelightsIndicator   : 59|1@1+  (1,0) [0|1] "" Vector__XXX
- SG_ c_IPC_SidelightsGate        : 60|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_FuelLevel_raw_1             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_FuelLevel_raw_2             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_IPC_MainBeamIndicator       : 57|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SidelightsIndicator     : 59|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SidelightsGate          : 60|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_AutoHeadlightsIndicator : 62|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 136 c_MS_IgnitionStatus_0x088: 8 Vector__XXX
