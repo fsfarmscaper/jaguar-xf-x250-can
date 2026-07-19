@@ -36,13 +36,18 @@ BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
 BO_ 136 c_MS_WakeTrigger_0x088: 8 Vector__XXX
  SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 200 c_MS_IPC_Unknown_0x0C8: 8 Vector__XXX
+BO_ 168 c_LateMY_Unknown_0x0A8: 8 Vector__XXX
 
+BO_ 200 c_MS_IPC_Unknown_0x0C8: 8 Vector__XXX
 BO_ 264 c_MS_IPC_Unknown_0x108: 8 Vector__XXX
+
 BO_ 360 c_MS_IPC_Unknown_0x168: 8 Vector__XXX
 BO_ 392 c_MS_IPC_Unknown_0x188: 8 Vector__XXX
-BO_ 472 c_MS_IPC_Unknown_0x1D8: 8 Vector__XXX
 
+BO_ 424 c_LateMY_Unknown_0x1A8: 8 Vector__XXX
+BO_ 456 c_LateMY_Unknown_0x1C8: 8 Vector__XXX
+BO_ 472 c_MS_IPC_Unknown_0x1D8: 8 Vector__XXX
+BO_ 488 c_LateMY_Unknown_0x1E8: 8 Vector__XXX
 
 BO_ 520 u_MS_ClimateControl_0x208: 8 Vector__XXX
  SG_ i_RearHeater : 17|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -50,6 +55,11 @@ BO_ 520 u_MS_ClimateControl_0x208: 8 Vector__XXX
  SG_ i_Defrost : 30|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_FrontHeater : 31|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_Recirculation : 37|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 552 c_LateMY_Unknown_0x228: 8 Vector__XXX
+
+BO_ 616 c_LateMY_Unknown_0x268: 8 Vector__XXX
+BO_ 632 c_LateMY_Unknown_0x278: 8 Vector__XXX
 
 BO_ 680 u_MS_BCMSettings_0x2A8: 8 Vector__XXX
  SG_ i_DriveAwayLocking : 32|3@1+ (1,0) [0|7] "" Vector__XXX
@@ -60,6 +70,13 @@ BO_ 680 u_MS_BCMSettings_0x2A8: 8 Vector__XXX
  SG_ i_MirrorFold : 43|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_GlobalWindowsClose : 45|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_GlobalWindowsOpen : 46|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 712 c_LateMY_Unknown_0x2C8: 8 Vector__XXX
+BO_ 714 c_LateMY_Unknown_0x2CA: 8 Vector__XXX
+BO_ 744 c_LateMY_Unknown_0x2E8: 8 Vector__XXX
+BO_ 776 c_LateMY_Unknown_0x308: 8 Vector__XXX
+
+BO_ 808 c_LateMY_Unknown_0x328: 8 Vector__XXX
 
 BO_ 824 TPMS_ETM_Status_0x338: 8 Vector__XXX
 
@@ -80,9 +97,11 @@ BO_ 824 TPMS_ETM_Status_0x338: 8 Vector__XXX
  SG_ TPMS_Check_Pressure_Spare_LCD          : 56|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 840 c_MS_IPC_Unknown_0x348: 8 Vector__XXX
+BO_ 848 c_LateMY_Unknown_0x350: 8 Vector__XXX
+BO_ 872 c_LateMY_Unknown_0x368: 8 Vector__XXX
 BO_ 888 c_MS_IPC_Unknown_0x378: 8 Vector__XXX
-BO_ 904 c_MS_IPC_Unknown_0x388: 8 Vector__XXX
 
+BO_ 904 c_MS_IPC_Unknown_0x388: 8 Vector__XXX
 
 BO_ 918 u_MS_WarningState_0x396: 8 Vector__XXX
  SG_ i_Warning_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -90,9 +109,9 @@ BO_ 918 u_MS_WarningState_0x396: 8 Vector__XXX
 BO_ 919 c_MS_IPC_Unknown_0x397: 8 Vector__XXX
  SG_ i_Warning_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 952 c_LateMY_Unknown_0x3B8: 8 Vector__XXX
 BO_ 956 c_MS_IPC_Unknown_0x3BC: 8 Vector__XXX
 BO_ 968 c_MS_IPC_Unknown_0x3C8: 8 Vector__XXX
-
 
 BO_ 1024 c_MS_CCF_Block1_0x400: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -156,8 +175,17 @@ BO_ 1029 Vehicle_Status_0x405: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 1096 c_LateMY_Unknown_0x448: 8 Vector__XXX
+BO_ 1160 c_LateMY_Unknown_0x488: 8 Vector__XXX
+BO_ 1161 c_LateMY_Unknown_0x489: 8 Vector__XXX
+BO_ 1162 c_LateMY_Unknown_0x48A: 8 Vector__XXX
+BO_ 1167 c_LateMY_Unknown_0x48F: 8 Vector__XXX
+BO_ 1183 c_LateMY_Unknown_0x49F: 8 Vector__XXX
+
+BO_ 1200 c_LateMY_Unknown_0x4B0: 8 Vector__XXX
 BO_ 1226 c_MS_IPC_Unknown_0x4CA: 8 Vector__XXX
 BO_ 1257 c_MS_IPC_Unknown_0x4E9: 8 Vector__XXX
+BO_ 1276 c_LateMY_Unknown_0x4FC: 8 Vector__XXX
 
 BO_ 1281 c_MS_IPC_Unknown_0x501: 8 Vector__XXX
 BO_ 1283 c_MS_RCC_Status_0x503: 8 Vector__XXX
@@ -172,6 +200,10 @@ BO_ 1299 c_MS_RSJB_Status_0x513: 8 Vector__XXX
  SG_ i_FDE_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_FDE_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_FDE_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1310 c_LateMY_Unknown_0x51E: 8 Vector__XXX
+
+BO_ 1371 c_LateMY_Unknown_0x55B: 8 Vector__XXX
 
 
 CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
@@ -223,3 +255,30 @@ CM_ BO_ 1292 "c_ICM_Status_0x50C: CONFIRMED by bench test -- drives ICM (Infotai
 CM_ BO_ 1295 "c_ICP_Status_0x50F: CONFIRMED by bench test -- drives ICP (Integrated Control Panel) status. Same pattern as other module-status frames.";
 CM_ BO_ 1297 "c_ClusterOwned_Backlighting_0x511: CONFIRMED cluster-owned on MS bus -- DO NOT TRANSMIT. Initially misidentified as a cluster backlighting frame safe to send; user corrected this after further testing -- treat the same as 0x397/0x457/0x337 (risk of bus ID collision). NOTE: 0x511 also exists as a SEPARATE, different HS-bus frame (see hs_bus.dbc, i_HSInitState_0x511, init state machine, also cluster-owned/not for TX) -- CAN IDs are only unique per-bus, these are two distinct frames that happen to share a number, both cluster-owned on their respective buses.";
 CM_ BO_ 1299 "i_FuelDisplayEnable: Required for cluster to drive the fuel gauge needle -- without this frame the cluster ignores 0x068 fuel data. 40s averaging delay after first seen. SETTLED payload (both Rhys candumps): 01 02 00 0C 13 00 00 01. STARTUP payload also observed: 13 01 00 00 13 00 00 03 (init state, before settling). Transmit at ~50ms. Still i_ -- not yet independently bench-confirmed on this project''s hardware. Source: candump-2019-11-01_185625.log + candumpStartup.log. ETM BUG FOUND: Rolling Counts test shows FUEL as ''---'' (invalid/not received) while ODO shows a real value -- confirms the fuel rolling counter is not being satisfied. Current ms.js payloads for this frame are fully static (copied verbatim from single captured frames), with no incrementing counter anywhere -- very likely the actual gap. ALSO: ETM fuel RAW shows as two separate 8-bit values (255, 255 observed = both invalid/open-circuit per the official diagnostic chart), not a single 16-bit value -- this contradicts the byte3-4 LE uint16 model used for 0x068 and suggests RAW A/B may be two independent 8-bit channels instead. The 99.6% shown on the LCD during this same test is more likely coming from 0x07E''s simple byte4 mechanism (already running throughout this project) than from 0x068/0x513 at all -- the calibrated 0x068 work is unverified as actually feeding anything the cluster trusts yet. UPDATE: RAW subsequently observed as 235, 255 (was 255, 255) -- one channel now reads a plausible in-range value (10-254 = normal per the official diagnostic chart), the other still invalid. Cause of the change not yet identified -- worth retesting deliberately rather than assuming causation from other changes made in between. MAJOR UPDATE: enabling 0x4D5 (ECM status, see hs_bus.dbc) enabled the fuel rolling count in ETM -- this may fully explain the earlier invalid/---/broken rolling count without 0x513 needing an internal incrementing counter of its own. The static payloads here may be sufficient once 0x4D5 is part of the standard baseline -- worth retesting this frame in isolation now that 0x4D5 exists, before assuming a counter needs to be added here. CONFIRMED (separately) to drive RSJB (Rear Smart Junction Box) module status in ETM -- same FAULTY -> CONNECTED -> MISSING pattern. This likely explains the original fuel-display-enable finding: RSJB is the module that actually reads/reports fuel sensor data in this architecture, so its presence being confirmed is plausibly WHY fuel needle movement depends on this frame, rather than this frame being a fuel-specific enable in its own right.";
+
+
+CM_ BO_ 424 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 456 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 488 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 552 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 616 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 632 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 712 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 714 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 744 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 776 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 808 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 848 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 872 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 952 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1096 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1160 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1161 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1162 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1167 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1183 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1200 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1276 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1310 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 1371 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+CM_ BO_ 168 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
