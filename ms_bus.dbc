@@ -44,9 +44,12 @@ BO_ 264 c_MS_IPC_Unknown_0x108: 8 Vector__XXX
 
 BO_ 360 c_MS_IPC_Unknown_0x168: 8 Vector__XXX
 BO_ 392 c_MS_IPC_Unknown_0x188: 8 Vector__XXX
-
 BO_ 424 c_LateMY_Unknown_0x1A8: 8 Vector__XXX
-BO_ 456 c_LateMY_Unknown_0x1C8: 8 Vector__XXX
+
+BO_ 456 i_Smart_Key_LateMY_Unknown_0x1C8: 8 Vector__XXX
+ SG_ c_IPC_SmartKeyBatteryLowGate       : 3|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SmartKeyBatteryLowMessage    : 39|1@1+  (1,0) [0|1] "" Vector__XXX
+
 BO_ 472 c_MS_IPC_Unknown_0x1D8: 8 Vector__XXX
 BO_ 488 c_LateMY_Unknown_0x1E8: 8 Vector__XXX
 
@@ -80,22 +83,20 @@ BO_ 776 c_LateMY_Unknown_0x308: 8 Vector__XXX
 BO_ 808 c_LateMY_Unknown_0x328: 8 Vector__XXX
 
 BO_ 824 TPMS_ETM_Status_0x338: 8 Vector__XXX
-
- SG_ TPMS_Cluster_Indicator_6x_Flashes      : 54|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_System_Fault_LCD                  : 53|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Sensor_Fault_LCD                  : 52|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Low_For_Speed_LCD                 : 51|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Cluster_Indicator_On              : 50|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Tire_Not_Monitored_Front_LH       : 49|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ TPMS_Check_Pressure_Front_LH_LCD       : 48|1@1+ (1,0) [0|1] "" Vector__XXX
-
- SG_ TPMS_Tire_Not_Monitored_Front_RH       : 63|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Check_Pressure_Front_RH_LCD       : 62|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Tire_Not_Monitored_Rear_LH        : 61|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Check_Pressure_Rear_LH_LCD        : 60|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Tire_Not_Monitored_Rear_RH        : 59|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ TPMS_Check_Pressure_Rear_RH_LCD        : 58|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Front_LH       : 49|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Cluster_Indicator_On              : 50|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Low_For_Speed_LCD                 : 51|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Sensor_Fault_LCD                  : 52|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_System_Fault_LCD                  : 53|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Cluster_Indicator_6x_Flashes      : 54|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ TPMS_Check_Pressure_Spare_LCD          : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Rear_RH_LCD        : 58|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Rear_RH        : 59|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Rear_LH_LCD        : 60|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Rear_LH        : 61|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Check_Pressure_Front_RH_LCD       : 62|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TPMS_Tire_Not_Monitored_Front_RH       : 63|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 840 c_MS_IPC_Unknown_0x348: 8 Vector__XXX
 BO_ 848 c_LateMY_Unknown_0x350: 8 Vector__XXX
@@ -226,6 +227,9 @@ All MS bus ETM module-status frames confirmed so far appear to be gated by this 
 
 CM_ BO_ 136 "c_MS_IgnitionStatus_0x088: byte 3 = 0x06 required to wake cluster. CONFIRMED MS-only — sending this frame on HS bus alone does NOT wake the cluster, and MS+HS together produces identical result to MS-only. NEW FINDING: this frame also affects PIE, PATS, and TPMS module status in ETM — while 0x088 is actively being sent, PIE reads FAULTY; when 0x088 is stopped, PIE, PATS, and TPMS all move to WAITING (not FAULTY, not MISSING). Read as a cluster power-state effect rather than a fix for those modules: stopping the wake frame likely halts the cluster's active module-polling routine, so those modules simply haven't been queried yet (WAITING) rather than queried-and-failed (FAULTY). Do not stop 0x088 as a way of clearing these — they still need their own presence frames once the cluster is awake and polling normally.";
 
+CM_ BO_ 456 "i_Smart_Key_LateMY_Unknown_0x1C8: CONFIRMED by bench test -- drives ICP LCD messages for Smart Key Battery Low. Confirmed from candump-2026-07-16_213719.log on a late MY XF250
+  Smary Key Battery Low: byte4 = mask 0x80. Gated by byte0 = mask 0x08";
+
 CM_ BO_ 918 "u_WarningState_0x396: TX frame (not cluster-owned, corrected from an earlier guess). Direct bench test: RULED OUT for the tire pressure warning specifically -- no effect. Absent from the 52s clean dump (candump-2020-04-24_130142.log) regardless. Actual TPMS trigger is 0x401 (JLR CCF, see that message''s comment). Purpose of 0x396 itself remains unknown -- may relate to one of the other three warnings (front indicator/rear taillamp/blind spot) not yet individually tested.";
 CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
 
@@ -257,7 +261,7 @@ CM_ BO_ 1299 "i_FuelDisplayEnable: Required for cluster to drive the fuel gauge 
 
 
 CM_ BO_ 424 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
-CM_ BO_ 456 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
+  
 CM_ BO_ 488 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
 CM_ BO_ 552 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
 CM_ BO_ 616 "Confirmed from candump-2026-07-16_213719.log on a late MY XF250";
