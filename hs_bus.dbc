@@ -153,6 +153,14 @@ BO_ 1011 c_HS_TSM_GearPosition_0x3F3: 8 Vector__XXX
  SG_ c_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ c_ParkFlag_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
+BO_ 1013 c_HS_ECM_Faults_0x3F5: 8 Vector__XXX
+// SG_ c_IPC_Bong_Byte0 : 15|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_EngineOilLevelStatus : 14|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ c_EngineSystemFault : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_RestrictedPerformanceRed : 58|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_RestrictedPerformanceYellow : 60|1@1+ (1,0) [0|1] "" Vector__XXX
+
+
 BO_ 1024 c_HS_CCF_Block1_0x400: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
@@ -221,7 +229,7 @@ BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
 
 BO_ 1029 c_HS_IPC_CCF_Relay_From_MS_0x401_To_HS_0x407: 8 Vector__XXX
 
-BO_ 1117 u_HS_IPC_Unknown_0x41D: 8 Vector__XXX
+BO_ 1053 u_HS_IPC_Unknown_0x41D: 8 Vector__XXX
 
 BO_ 1058 c_HS_GSM_ETM_Status_DynamicWinterModeRequest_0x422: 8 Vector__XXX
  SG_ c_ETM_ProgramTemporarilyUnavailable : 55|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -249,20 +257,40 @@ BO_ 1149 u_HS_IPC_Unknown_0x47D: 8 Vector__XXX
 
 BO_ 1197 c_HS_PIE_ETM_Status_0x4AD: 8 Vector__XXX
 
-BO_ 1205 c_HS_ASL_LED_0x4B5: 8 Vector__XXX
- SG_ c_ASL_LED_State : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+BO_ 1205 c_HS_ASL_Faults_0x4B5: 8 Vector__XXX
+ SG_ c_EngineOilLevelMonitorSystemFault_Msg : 24|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ c_WaterInFuelSeeHandbook_Msg : 31|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1237 c_HS_ECM_ETM_Status_0x4D5: 8 Vector__XXX
+ SG_ c_CheckEngineLight_Indicator : 0|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_PleaseWaitColdStartInProgress_Msg : 27|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_ASL_Indicator : 31|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 1271 i_HS_IPC_OdometerOrLifetime_0x4F7: 8 Vector__XXX
  SG_ i_Field1 : 39|16@0+ (1,0) [0|65535] "" Vector__XXX
  SG_ i_Field2 : 55|16@0+ (1,0) [0|65535] "" Vector__XXX
+
+BO_ 1275 i_HS_IPC_OdometerCount_0x4FB: 8 Vector__XXX
+ SG_ i_OdometerIncrementPulse : 0|8@0+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 1279 c_HS_IPC_RTCTimestamp_0x4FF: 8 Vector__XXX
  SG_ c_UnixTimestamp : 39|32@0+ (1,0) [0|4294967295] "s" Vector__XXX
 
 BO_ 1297 i_HS_IPC_InitState_0x511: 8 Vector__XXX
  SG_ i_InitState_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 1343 c_HS_EPB_Status_0x53F: 8 Vector__XXX
+
+
+VAL_ 1013 c_EngineOilLevelStatus
+    0 "Normal"
+    1 "Low"
+    2 "CriticallyLow"
+    3 "High"; 
+
+VAL_ 1205 c_EngineOilLevelMonitorSystemFault_Msg
+    0  "NoFault"
+    15 "Fault";
 
 
 CM_ BO_ 377 "i_VehicleSpeed: Pre-facelift (Rhys Morgan HsInfo.js). UNCONFIRMED on facelift cluster -- transmitting at any tested value produces no speedometer response.";

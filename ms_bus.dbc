@@ -27,8 +27,8 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
 
 
 BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
- SG_ c_FuelLevel_raw_1             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ c_FuelLevel_raw_2             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_FuelLevel_raw_B             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ c_FuelLevel_raw_A             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ c_IPC_MainBeamIndicator       : 57|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsIndicator     : 59|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsGate          : 60|1@1+  (1,0) [0|1] "" Vector__XXX
@@ -37,18 +37,30 @@ BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
 BO_ 136 c_MS_IgnitionStatus_0x088: 8 Vector__XXX
  SG_ c_IgnitionOn_b3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 168 c_LateMY_Unknown_0x0A8: 8 Vector__XXX
+BO_ 168 c_FSJB_DoorStatus_0x0A8: 8 Vector__XXX
+ SG_ c_DoorStatus_Gate           : 7|8@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_DoorStatus_BongDisable    : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_WasherFluidLow_Msg        : 21|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Door_Front_Left_Closed    : 40|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Door_Front_Right_Closed   : 41|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Door_Rear_Left_Closed     : 42|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Door_Rear_Right_Closed    : 43|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Trunk_Closed              : 44|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Hood_Closed               : 45|1@1+ (1,0) [0|1] "" Vector__XXX
+
 
 BO_ 200 c_MS_IPC_Unknown_0x0C8: 8 Vector__XXX
 BO_ 264 c_MS_IPC_Unknown_0x108: 8 Vector__XXX
-
 BO_ 360 c_MS_IPC_Unknown_0x168: 8 Vector__XXX
-BO_ 392 c_MS_IPC_Unknown_0x188: 8 Vector__XXX
+
+BO_ 392 c_MS_IPC_Odometer_0x188: 8 Vector__XXX
+ SG_ c_Odometer_KM_Raw   : 32|24@1+  (1,0) [0|16777215] "" Vector__XXX
+
 BO_ 424 c_LateMY_Unknown_0x1A8: 8 Vector__XXX
 
 BO_ 456 i_Smart_Key_LateMY_Unknown_0x1C8: 8 Vector__XXX
- SG_ c_IPC_SmartKeyBatteryLowGate       : 3|1@1+  (1,0) [0|1] "" Vector__XXX
- SG_ c_IPC_SmartKeyBatteryLowMessage    : 39|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SmartKeyBatteryLow_Gate   : 3|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_SmartKeyBatteryLow_Msg    : 39|1@1+  (1,0) [0|1] "" Vector__XXX
 
 BO_ 472 c_MS_IPC_Unknown_0x1D8: 8 Vector__XXX
 BO_ 488 c_LateMY_Unknown_0x1E8: 8 Vector__XXX
@@ -60,24 +72,23 @@ BO_ 520 u_MS_ClimateControl_0x208: 8 Vector__XXX
  SG_ i_FrontHeater : 31|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ i_Recirculation : 37|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 552 c_LateMY_Unknown_0x228: 8 Vector__XXX
+BO_ 552 c_Unknown_Odometer_0x228: 8 Vector__XXX
+ SG_ c_Odometer_KM_Raw   : 40|24@1+  (1,0) [0|16777215] "" Vector__XXX
+
 
 BO_ 616 c_LateMY_Unknown_0x268: 8 Vector__XXX
 BO_ 632 c_LateMY_Unknown_0x278: 8 Vector__XXX
 
 BO_ 680 u_MS_BCMSettings_0x2A8: 8 Vector__XXX
- SG_ i_DriveAwayLocking : 32|3@1+ (1,0) [0|7] "" Vector__XXX
- SG_ i_AutoLock : 37|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_PassiveArming : 38|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_AlarmSensors : 35|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_TwoStageLocking : 40|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_MirrorFold : 43|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_GlobalWindowsClose : 45|1@1+ (1,0) [0|1] "" Vector__XXX
- SG_ i_GlobalWindowsOpen : 46|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_EngineSystemFault_1_Msg : 34|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_EngineSystemFault_2_Msg : 39|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_PressBrakeWhenStarting_Msg : 44|1@1+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 712 c_LateMY_Unknown_0x2C8: 8 Vector__XXX
 BO_ 714 c_LateMY_Unknown_0x2CA: 8 Vector__XXX
-BO_ 744 c_LateMY_Unknown_0x2E8: 8 Vector__XXX
+BO_ 744 c_Unknown_Odometer_0x2E8: 8 Vector__XXX
+ SG_ c_Odometer_KM_Raw   : 40|24@1+  (1,0) [0|16777215] "" Vector__XXX
+
 BO_ 776 c_LateMY_Unknown_0x308: 8 Vector__XXX
 
 BO_ 808 c_LateMY_Unknown_0x328: 8 Vector__XXX
@@ -103,7 +114,9 @@ BO_ 848 c_LateMY_Unknown_0x350: 8 Vector__XXX
 BO_ 872 c_LateMY_Unknown_0x368: 8 Vector__XXX
 BO_ 888 c_MS_IPC_Unknown_0x378: 8 Vector__XXX
 
-BO_ 904 c_MS_IPC_Unknown_0x388: 8 Vector__XXX
+BO_ 904 c_MS_IPC_Odometer_0x388: 8 Vector__XXX
+ SG_ c_Odometer_KM_Raw   : 40|24@1+  (1,0) [0|16777215] "" Vector__XXX
+
 
 BO_ 918 u_MS_WarningState_0x396: 8 Vector__XXX
  SG_ i_Warning_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -177,7 +190,7 @@ BO_ 1029 Vehicle_Status_0x405: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1096 c_LateMY_Unknown_0x448: 8 Vector__XXX
+BO_ 1096 c_MS_CCF_ITP_0x448: 8 Vector__XXX
 BO_ 1160 c_LateMY_Unknown_0x488: 8 Vector__XXX
 BO_ 1161 c_LateMY_Unknown_0x489: 8 Vector__XXX
 BO_ 1162 c_LateMY_Unknown_0x48A: 8 Vector__XXX
@@ -190,6 +203,7 @@ BO_ 1257 c_MS_IPC_Unknown_0x4E9: 8 Vector__XXX
 BO_ 1276 c_LateMY_Unknown_0x4FC: 8 Vector__XXX
 
 BO_ 1281 c_MS_IPC_Unknown_0x501: 8 Vector__XXX
+BO_ 1282 c_MS_HDM_Status_0x502: 8 Vector__XXX
 BO_ 1283 c_MS_RCC_Status_0x503: 8 Vector__XXX
 BO_ 1284 c_MS_DDCU_Status_0x504: 8 Vector__XXX
 BO_ 1285 c_MS_PDCU_Status_0x505: 8 Vector__XXX
@@ -197,18 +211,21 @@ BO_ 1288 c_MS_KVM_Status_0x508: 8 Vector__XXX
 BO_ 1291 c_MS_DSM_Status_0x50B: 8 Vector__XXX
 BO_ 1292 c_MS_ICM_Status_0x50C: 8 Vector__XXX
 BO_ 1295 c_MS_ICP_Status_0x50F: 8 Vector__XXX
-BO_ 1297 c_MS_IPC_Unknown_0x511: 8 Vector__XXX
+BO_ 1297 c_MS_FSJB_Status_0x511: 8 Vector__XXX
 BO_ 1299 c_MS_RSJB_Status_0x513: 8 Vector__XXX
  SG_ i_FDE_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_FDE_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ i_FDE_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1310 c_LateMY_Unknown_0x51E: 8 Vector__XXX
 
+BO_ 1310 c_LateMY_Unknown_0x51E: 8 Vector__XXX
+BO_ 1320 c_MS_PSM_Status_0x528: 8 Vector__XXX
 BO_ 1371 c_LateMY_Unknown_0x55B: 8 Vector__XXX
 
 
-CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. Byte 4 bitmask: 0x00=P 0x01=R 0x02=N 0x04=D 0x08=S.";
+CM_ BO_ 40 "c_GearSelector: Source Rhys Morgan Id40.js. 
+Byte 4 bitmask: P=0x00 R=0x01 N=0x02 D=0x04 S=0x08.";
+
 CM_ BO_ 72 "c_MS_RSJB_Status_Raw_0x048: Provisional reverse engineering. Frame observed from multiple vehicles. Appears to originate from RSJB (Rear Junction Box). Byte4 and Byte5 are believed to be raw fuel sender ADC values (8-bit each). Confirmed examples: 0x39/0xFE, 0x3D/0xFE, 0x3F/0x82, 0x40/0x81 correspond with processed fuel values transmitted in 0x068. Byte0/Byte1 are currently unknown status fields. Observation across two vehicles: Byte0 value FE dominates (~80% of frames) while FF occurs ~20% of frames. When Byte0=FF, Byte1 is typically 0x80; when Byte0=FE, Byte1 is typically 0x00. Pattern is periodic and independent of fuel sender changes, suggesting an alive indicator, rolling status bit, sample-valid marker, or message state field. Do not assume FE/FF represents fuel data. Byte2/Byte3/Byte6/Byte7 remain unidentified. Source: multi-vehicle candump analysis.";
 
 CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %): 5259=33%, 13370=50%, 25657=66%, 28220=75%, 35604=80%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay).
@@ -231,7 +248,7 @@ CM_ BO_ 456 "i_Smart_Key_LateMY_Unknown_0x1C8: CONFIRMED by bench test -- drives
   Smary Key Battery Low: byte4 = mask 0x80. Gated by byte0 = mask 0x08";
 
 CM_ BO_ 918 "u_WarningState_0x396: TX frame (not cluster-owned, corrected from an earlier guess). Direct bench test: RULED OUT for the tire pressure warning specifically -- no effect. Absent from the 52s clean dump (candump-2020-04-24_130142.log) regardless. Actual TPMS trigger is 0x401 (JLR CCF, see that message''s comment). Purpose of 0x396 itself remains unknown -- may relate to one of the other three warnings (front indicator/rear taillamp/blind spot) not yet individually tested.";
-CM_ BO_ 919 "c_ClusterOwned_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
+CM_ BO_ 919 "c_MS_ICP_Unknown_0x397: CONFIRMED cluster-owned (already observed as Rx from the cluster, per user) -- DO NOT TRANSMIT, same category as 0x457 (risk of bus ID collision). Cross-checked against the clean dump (candump-2020-04-24_130142.log): also absent there, consistent with being the cluster''s own fault-state output that only appears when the fault is active. Read as a symptom, not a cause.";
 
 CM_ BO_ 1024 "i_CCF_Block1_0x400: Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
 CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. 
@@ -241,10 +258,15 @@ CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) b
   This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. 
   NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. 
 
-  Blind Spot Monitor Not Available: byte0 = 0x1C, byte3 = mask 0x80
-  Tire Pressure System Fault:  byte0 = 0x1C, byte3 = mask 0x02
-  Steering Column Lock: byte0 = 0x08, byte2 = mask 0x04
-  Check Pedestrian System: byte0 = 0x17, byte 6 = mask 0x80
+  Blind Spot Monitor Not Available: byte0 = 0x1C, byte3 = mask 0x80  (Group 36 mask 0x01) (Group 191 mask 0x80)
+  Tire Pressure System Fault:  byte0 = 0x1C, byte3 = mask 0x02 (Group 100 mask 0x01) (Group 36 mask 0x03 - No TPMS )
+  Steering Column Lock: byte0 = 0x08, byte2 = mask 0x04   (Group 50 mask 0x04)
+  Check Pedestrian System: byte0 = 0x17, byte 6 = mask 0x80  (Group 159 mask 0x80)
+  EPB Disable: byte0 = 0x06, byte 6 (Group 40 mask 0x10 0x401 - Doesn't clear fault) (Group 104 set 0x01 0x400 0F byte 7 0x01 - Doesn't clear fault)
+  Battery Monitor Sensor (Group 210, value 0x01 0x400 : 0x1F, byte 1 - Doesn't clear fault)
+  Low Coolant (Group 170, value 0x00 mask 0x02 0x401 : 0x1A byte 3)
+  mux  = (offset / 7) + 1        // integer division
+  byte = (offset % 7) + 1
   These are the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
 CM_ BO_ 1029 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
 CM_ BO_ 1028 "JLR Vehicle Status 0x405 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
