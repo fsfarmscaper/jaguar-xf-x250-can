@@ -40,13 +40,17 @@ BO_ 953 i_OilTemp_0x3B9: 8 Vector__XXX
 // direct bench payload testing on the XF250 facelift cluster.
 
 
+BO_ 487 i_HS_ClusterRTR_0x1E7: 1 Vector__XXX
+
 BO_ 523 c_HS_ABS_WheelSpeed_0x20B: 8 Vector__XXX
+ SG_ i_VehicleSpeed : 55|16@0+ (0.01,0) [0|655.35] "km/h" Vector__XXX
+ SG_ i_BrakePressure : 33|10@0+ (0.2,0) [0|204.6] "bar" Vector__XXX
 
 BO_ 533 i_HS_ChargingSystemFault_0x215: 8 Vector__XXX
  SG_ i_ChargingFault_Byte0 : 6|1@1+ (1,0) [0|1] "" Vector__XXX
 
-BO_ 535 i_HS_IPC_Heartbeat_0x217: 8 Vector__XXX
- SG_ c_Heartbeat_static : 0|64@1+ (1,0) [0|0] "" Vector__XXX
+BO_ 535 c_HS_IPC_BatteryCurrentRelay_0x217: 8 Vector__XXX
+ SG_ c_BatteryChargingCurrent_Relay : 32|8@1+ (1,-127) [-127|128] "A" Vector__XXX
 
 BO_ 580 u_HS_NightLight_0x244: 8 Vector__XXX
  SG_ u_NightLight_OnOff : 0|8@1+ (1,0) [0|255] "" Vector__XXX
@@ -54,16 +58,16 @@ BO_ 580 u_HS_NightLight_0x244: 8 Vector__XXX
 
 BO_ 592 c_HS_IPC_Unknown_0x250: 8 Vector__XXX
 
-BO_ 599 i_HS_IPC_RTCClock_0x257: 8 Vector__XXX
- SG_ RTC_FrameCounter : 24|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ RTC_Day          : 32|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ RTC_Month        : 40|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ RTC_Check        : 48|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ RTC_Status       : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+BO_ 599 c_HS_IPC_RTCClock_0x257: 8 Vector__XXX
+ SG_ c_BatteryVoltage_Relay : 8|8@1+ (0.05,6) [6|18.75] "V" Vector__XXX
+ SG_ c_RTC_FrameCounter_8 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_RTC_DerivedNibble  : 24|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ i_RTC_Day            : 32|8@1+ (1,0) [1|31] "" Vector__XXX
+ SG_ i_RTC_Month          : 40|8@1+ (1,0) [1|12] "" Vector__XXX
+ SG_ u_RTC_Status_b7      : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 661 c_HS_ECM_RPM_0x295: 8 Vector__XXX
- SG_ c_RPM_Raw : 48|16@1+ (1,1) [0|65535] "raw" Vector__XXX
- // SG_ c_RPM_Raw : 48|16@0+ (1,1) [0|8191] "rpm" Vector__XXX
+ SG_ c_RPM_Raw : 52|13@0+ (1,0) [0|8191] "rpm" Vector__XXX
 
 BO_ 665 u_HS_Unknown_0x299: 8 Vector__XXX
 
@@ -111,7 +115,7 @@ BO_ 786 i_HS_GSM_SelectorLock_0x312: 8 Vector__XXX
  SG_ i_GearFlag_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 823 c_HS_IPC_DoorStatus_0x337: 8 Vector__XXX
- SG_ Door_Front_Left_Closed    : 16|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Door_Front_Left_Closed  : 16|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Door_Front_Right_Closed   : 17|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Door_Rear_Left_Closed     : 18|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ Door_Rear_Right_Closed    : 19|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -143,15 +147,57 @@ BO_ 1003 c_HS_ABS_DSCStatus_0x3EB: 8 Vector__XXX
  SG_ c_ABS_OK_Combo : 21|2@1+ (1,0) [0|3] "" Vector__XXX
  SG_ u_Beep : 23|1@1+ (1,0) [0|1] "" Vector__XXX
 
+//BO_ 1011 c_HS_TSM_GearPosition_0x3F3: 8 Vector__XXX
+// SG_ c_GearFlag_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ c_GearFlag_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ i_Counter_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ i_Counter_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ c_GearFlag_Byte4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ c_ParkFlag_Byte5 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ c_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+// SG_ c_ParkFlag_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
 BO_ 1011 c_HS_TSM_GearPosition_0x3F3: 8 Vector__XXX
- SG_ c_GearFlag_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ c_GearFlag_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ i_Counter_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ i_Counter_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ c_GearFlag_Byte4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ c_ParkFlag_Byte5 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ c_GearFlag_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ c_ParkFlag_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_GearboxFaultAvoid_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ c_GearboxFaultAvoid_Byte1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Counter : 16|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ Checksum : 24|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ B4_Complement : 32|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ B5_Complement : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+
+ SG_ Mode : 48|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ ManualGear : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+
+VAL_ 1011 Mode
+ 1 "Reverse"
+ 2 "Neutral"
+ 4 "Drive"
+ 8 "Sport_Manual"
+ 16 "Unknown_Mode_10";
+
+
+CM_ SG_ 1011 c_GearboxFaultAvoid_Byte0 "Bench-confirmed transmit value 0x10 (mask 0x10 set, all other bits clear) -- satisfies the byte0-mask-0x10 Gearbox Fault avoidance condition documented in the message comment. Passive captures observed 0x7C (0x5C for Park) instead, which also satisfies the mask; the simplified 0x10 constant is the bench-confirmed value for transmission.";
+CM_ SG_ 1011 c_GearboxFaultAvoid_Byte1 "Bench-confirmed transmit value 0x04 (mask 0x04 set, all other bits clear) -- satisfies the byte1-mask-0x04 Gearbox Fault avoidance condition documented in the message comment. Passive captures observed 0x24/0x25/0x66 instead, which also satisfy the mask; the simplified 0x04 constant is the bench-confirmed value for transmission.";
+CM_ SG_ 1011 Checksum "Byte3 = Byte2 + Mode(byte6) + ManualGear(byte7) + 2, mod 256. Bench-confirmed formula, generalizes the gear-dependent offsets in the message comment.";
+CM_ SG_ 1011 B4_Complement "Byte4 = bitwise NOT of Mode (byte6). Bench-confirmed.";
+CM_ SG_ 1011 B5_Complement "Byte5 = bitwise NOT of ManualGear (byte7). Bench-confirmed.";
+CM_ SG_ 1011 Mode "Byte6. Normal selector: Reverse=1, Neutral=2, Drive=4, Sport=8. Also held at 8 (constant) while in Manual mode, with the specific gear carried in ManualGear (byte7) instead.";
+CM_ SG_ 1011 ManualGear "Byte7. 0x00 in normal (non-manual) selector. In Manual mode: M1=1, M2=2, M3=4, M4=8, M5=16, M6=32, Sport=64 (0x40, selects Sport mode), NoSelection=128 (0x80) -- also the value used by Park (with Mode/byte6=0).";
+
+VAL_ 1011 ManualGear
+ 1 "M1"
+ 2 "M2"
+ 4 "M3"
+ 8 "M4"
+ 16 "M5"
+ 32 "M6"
+ 64 "Sport"
+ 128 "NoSelection"
+;
+
 
 BO_ 1013 c_HS_ECM_Faults_0x3F5: 8 Vector__XXX
 // SG_ c_IPC_Bong_Byte0 : 15|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -171,7 +217,7 @@ BO_ 1031 c_HS_CCF_Block2_Mirrored_From_MS_0x407: 8 Vector__XXX
  SG_ i_CCF_LineNumber : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
 
-BO_ 1028 Vehicle_Status_404: 8 Vector__XXX
+BO_ 1028 c_HS_FSJB_CCFVehicle_Status_0x404: 8 Vector__XXX
  SG_ Mux_404 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
  SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -199,7 +245,7 @@ BO_ 1028 Vehicle_Status_404: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
+BO_ 1029 c_HS_FSJB_CCFVehicle_Status_0x405: 8 Vector__XXX
  SG_ Mux_405 M : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
  SG_ Status_01_Value_1 m1 : 8|16@1+ (1,0) [0|65535] "" Vector__XXX
@@ -227,8 +273,6 @@ BO_ 1029 Vehicle_Status_405: 8 Vector__XXX
  SG_ VIN_SEGMENT_12_2 m18 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ VIN_SEGMENT_12_3 m18 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
 
-BO_ 1029 c_HS_IPC_CCF_Relay_From_MS_0x401_To_HS_0x407: 8 Vector__XXX
-
 BO_ 1053 u_HS_IPC_Unknown_0x41D: 8 Vector__XXX
 
 BO_ 1058 c_HS_GSM_ETM_Status_DynamicWinterModeRequest_0x422: 8 Vector__XXX
@@ -242,7 +286,9 @@ BO_ 1058 c_HS_GSM_ETM_Status_DynamicWinterModeRequest_0x422: 8 Vector__XXX
 
 BO_ 1077 c_HS_PATS_ETM_Status_0x435: 8 Vector__XXX
 
-BO_ 1111 u_HS_IPC_Unknown_0x457: 8 Vector__XXX
+BO_ 1111 i_HS_IPC_LightingStatus_0x457: 8 Vector__XXX
+ SG_ c_Sidelights_Mirror : 20|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_AutoLightsMode : 21|2@1+ (1,0) [0|3] "" Vector__XXX
 BO_ 1117 u_HS_IPC_Unknown_0x45D: 8 Vector__XXX
 
 BO_ 1143 i_HS_ESCL_SteeringLock_0x477: 8 Vector__XXX
@@ -258,13 +304,14 @@ BO_ 1149 u_HS_IPC_Unknown_0x47D: 8 Vector__XXX
 BO_ 1197 c_HS_PIE_ETM_Status_0x4AD: 8 Vector__XXX
 
 BO_ 1205 c_HS_ASL_Faults_0x4B5: 8 Vector__XXX
- SG_ c_EngineOilLevelMonitorSystemFault_Msg : 24|4@1+ (1,0) [0|15] "" Vector__XXX
- SG_ c_WaterInFuelSeeHandbook_Msg : 31|1@1+ (1,0) [0|1] "" Vector__XXX
-
-BO_ 1237 c_HS_ECM_ETM_Status_0x4D5: 8 Vector__XXX
  SG_ c_CheckEngineLight_Indicator : 0|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ c_PleaseWaitColdStartInProgress_Msg : 27|1@1+ (1,0) [0|1] "" Vector__XXX
  SG_ c_ASL_Indicator : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+
+BO_ 1237 c_HS_ECM_ETM_Status_0x4D5: 8 Vector__XXX
+ SG_ c_EngineOilLevelMonitorSystemFault_Msg : 24|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ c_WaterInFuelSeeHandbook_Msg : 31|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ i_OilTemperature : 55|8@0+ (1,-60) [-60|195] "degC" Vector__XXX
 
 BO_ 1271 i_HS_IPC_OdometerOrLifetime_0x4F7: 8 Vector__XXX
  SG_ i_Field1 : 39|16@0+ (1,0) [0|65535] "" Vector__XXX
@@ -274,12 +321,41 @@ BO_ 1275 i_HS_IPC_OdometerCount_0x4FB: 8 Vector__XXX
  SG_ i_OdometerIncrementPulse : 0|8@0+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 1279 c_HS_IPC_RTCTimestamp_0x4FF: 8 Vector__XXX
- SG_ c_UnixTimestamp : 39|32@0+ (1,0) [0|4294967295] "s" Vector__XXX
+ SG_ c_ClockCounter_32 : 39|32@0+ (1,0) [0|4294967295] "count" Vector__XXX
 
 BO_ 1297 i_HS_IPC_InitState_0x511: 8 Vector__XXX
  SG_ i_InitState_b1 : 8|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 1343 c_HS_EPB_Status_0x53F: 8 Vector__XXX
+
+BO_ 1511 u_HS_IPC_Unknown_0x5E7: 1 Vector__XXX
+ SG_ u_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 587 i_HS_WheelSpeeds_Front_0x24B: 8 Vector__XXX
+ SG_ i_WheelSpeed_FL : 54|15@0+ (0.01,0) [0|327.67] "km/h" Vector__XXX
+ SG_ i_WheelSpeed_FR : 38|15@0+ (0.01,0) [0|327.67] "km/h" Vector__XXX
+ SG_ i_YawRate : 17|10@0+ (0.2,-100) [-100|104.2] "deg/s" Vector__XXX
+
+BO_ 640 i_HS_SteeringAngle_0x280: 8 Vector__XXX
+ SG_ i_SteeringAngle : 55|16@0+ (0.1,-780) [-780|5773.4] "deg" Vector__XXX
+
+BO_ 660 i_HS_WheelSpeeds_Rear_0x294: 8 Vector__XXX
+ SG_ i_WheelSpeed_RL : 54|15@0+ (0.01,0) [0|327.67] "km/h" Vector__XXX
+ SG_ i_WheelSpeed_RR : 38|15@0+ (0.01,0) [0|327.67] "km/h" Vector__XXX
+ SG_ i_LateralAccel : 15|8@0+ (0.1,-11) [-11|14.5] "m/s2" Vector__XXX
+
+BO_ 693 i_HS_ThrottlePosition_0x2B5: 8 Vector__XXX
+ SG_ i_ThrottlePosition : 33|10@0+ (0.1,0) [0|102.3] "%" Vector__XXX
+
+BO_ 789 i_HS_AirTemperature_0x315: 8 Vector__XXX
+ SG_ i_AirTemperature : 9|10@0+ (0.25,-128) [-128|127.75] "degC" Vector__XXX
+
+BO_ 851 i_HS_GearSelector_0x353: 8 Vector__XXX
+ SG_ i_Gear : 27|4@0+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 979 i_HS_TransmissionOilTemp_0x3D3: 8 Vector__XXX
+ SG_ i_TransmissionOilTemp : 39|8@0+ (1,-40) [-40|214] "degC" Vector__XXX
+
 
 
 VAL_ 1013 c_EngineOilLevelStatus
@@ -297,11 +373,11 @@ CM_ BO_ 377 "i_VehicleSpeed: Pre-facelift (Rhys Morgan HsInfo.js). UNCONFIRMED o
 
 CM_ BO_ 523 "u_SpeedCandidate_0x20B: Byte-level analysis of the L322 candump (378 samples, ~15ms interval): byte0=0xC3 static, byte2=0x87 static. byte1 is a 15-value rolling counter (0x03-0x11, wraps). byte4 = (byte1-3)*4 -- derived/redundant, likely a freshness check. byte3/byte5 form a SEPARATE, much slower counter pair: baseline byte3=0xFF/byte5=0x00, then byte3=0xFE/byte5=0x01, then byte3=0xFD/byte5=0x02 (byte3 = 0xFF - N, byte5 = N) -- only reaches N=2 over ~6 seconds while the source vehicle is stationary. Working theory: this is a raw WHEEL-PULSE counter (ticking from idle-engine vibration on the tone ring, not real rotation), not a direct speed magnitude -- i.e. a differentiate-over-time signal like a real ABS/wheel-speed module would send, structurally similar to how 0x3EB gates trust in other DSC data. Bench test: replaying this pattern changed the speedometer from pegged-at-max (no 0x20B present) to holding at 0 -- consistent with the cluster wanting to see counter *movement* rather than a static magnitude in 0x29B. NEXT TEST: run 0x20B with its counter incrementing (even arbitrarily) together with 0x29B bytes 6-7 set nonzero, check whether the needle now tracks a plausible value instead of holding at 0. MAJOR UPDATE: bench test with byte7=0x88 (bytes6-7 = 00 88) caused RAW speed to flicker between 0 and 136, displaying ~1.2-2.1 mph. 136/64 = 2.125 -- matches the upper display bound closely. Working formula: bytes 6-7 as big-endian 16-bit raw value, mph = raw/64 (or close to it -- needs a second data point at a different value to confirm the exact divisor and check linearity). The 0-vs-136 FLICKER is the open problem -- consistent with the cluster only trusting the frame intermittently, the same pattern seen with every other gating signal on this project (0x088, 0x295, 0x3F3 all needed a specific counter/freshness byte before being trusted continuously). Candidate causes: the existing byte1 fast counter (0x03-0x11 wrap) or byte3/byte5 slow counter may need to align with the speed value in a specific way not yet reproduced, or a completely separate freshness mechanism is needed for bytes 6-7 specifically. NEXT TEST: try varying RESEND_INTERVAL_MS or decoupling the speed update rate from the counter update rate to see if the flicker resolves. FLICKER CAUSE IDENTIFIED: was a bus collision between two of the user''s own test scripts (a separate script sending all-zeros to 0x20B was running at the same time as this one) -- NOT a cluster trust/freshness issue as speculated. Confirmed clean once the competing script was stopped. CLEAN DATA POINT: bytes 6-7 = 0x50, 0x50 (raw=0x5050=20560 either byte order, since both bytes match) displays 133.4 mph / 214.7 kph, no flicker. The earlier 136-raw/~2.1mph data point was captured DURING the flicker/collision and is likely contaminated -- ratio check (136/2.1=65 vs 20560/133.4=154) doesn''t hold a consistent scale, so treat that first point as unreliable rather than trying to fit both. Formula still UNDETERMINED with only one clean point, and this test can''t distinguish big-endian vs little-endian since byte6=byte7=0x50. NEXT TEST: use distinct byte6/byte7 values (e.g. 0x01, 0x00) to determine byte order, plus 2-3 more speed values to fit an actual scale/offset. FORMULA DERIVED from a 17-point user-supplied calibration table spanning 0x000F to 0x7FFF: mph = raw * 0.0064310 + 1.20 (linear fit, residuals within +/-0.05 mph on 16 of 17 points). bytes 6-7 as a 16-bit value (byte order not independently distinguished, but consistent with big-endian given earlier single-byte test). OUTLIER: 0x7FFF (32767) predicts ~212 mph from this formula but measures 194.1 mph -- likely a display-side clamp/cap (194 mph plausible max digital-speedo readout) rather than a break in the encoding, and 0x7FFF is also the max positive int16 value, a common firmware sentinel -- not fully explained, flagged rather than dismissed. Formula fits tightly enough to treat as reliable for encoding test speeds, pending independent re-verification. REFINED with 3 more data points near the top: 0x7000->185.6, 0x70FF->187.2, 0x74FF->193.8 -- ALL match the formula closely (e.g. 0x74FF predicts 193.8, exact). This means the formula is accurate up to at least 193.8 mph, and the earlier 0x7FFF outlier is confirmed to be a genuine DISPLAY CLAMP around ~194 mph, not a formula breakdown -- the clamp threshold sits somewhere between raw 29951 (193.8, matches formula) and raw 32767 (194.1, far below the ~212 the formula would predict). Consistent with a much earlier bench finding where a different 0x3EB payload was separately observed pegging the speedo to ''194 mph'' -- likely the same hard display cap, not a coincidence. Formula can now be treated as reliable across the full practical speed range up to the ~194 mph clamp.";
 CM_ BO_ 533 "i_ChargingSystemFault_0x215: STRONG CANDIDATE for the BATTERY NOT CHARGING / Generator Failure fault. Sourced from L322/L405 CAN code docs, byte0 mask 0x40 = ~charging system fault (battery) -- tilde convention elsewhere in these docs means the bit reads inverted (i.e. clear the bit to indicate a fault is present, or vice versa -- needs bench confirmation either way). NOT yet tested. Context: user found a large voltage mismatch on the bench -- physical/local battery reading ~623 (raw ADC, matches ETM test 22 LOCAL) vs cluster-reported VEHICLE battery voltage ~1200 -- almost certainly the actual trigger for this fault, likely via whatever frame carries VEHICLE battery voltage (not yet identified separately from this fault-bit candidate). Sits immediately next to 0x20B in the L322/L405 HS CAN ID list.";
-CM_ BO_ 535 "c_HSHeartbeat: Constant payload 00 03 FF 00 7F FF 00 00, ~8ms interval. Cluster-originated -- observe only, do not transmit on a live bus with the cluster present.";
+CM_ BO_ 535 "c_HS_IPC_BatteryCurrentRelay_0x217: cluster-originated, ~8ms. NOT a static heartbeat -- that label is RETRACTED. BENCH-CONFIRMED 2026-08-16 (validate_battery_relay_hs.py): byte4 = battery CHARGING CURRENT (A = byte4-127), a 1:1 relay of MS 0x1A8 byte5 (r_curr=1.000). The cluster (MS<->HS gateway) forwards BMS battery current to the ECM here. It reads constant only when the battery state is constant. Companion: battery VOLTAGE relays to HS 0x257 byte1. Other bytes not exercised -- u_. Cluster-originated: observe only, do not transmit with the cluster present.";
 CM_ BO_ 580 "u_NightLight_0x244: UNCONFIRMED, sourced from forum discussion (no direct citation given, treat as third-hand until traced to source). Claimed: byte0=0xF7 + byte1=0x40 = night light ON; byte0=0x00 + byte1=0x40 = night light OFF. Not yet bench-tested on the XF250 cluster.";
-CM_ BO_ 599 "c_RTCClock: Cluster-originated real-time clock broadcast, ~40ms interval. Byte 0/1/2 purpose not fully decoded (byte 0 = 0xFF likely invalid/uninitialised flag).";
+CM_ BO_ 599 "c_HS_IPC_RTCClock_0x257: Cluster-originated RTC/clock broadcast. BENCH-DECODED 2026-08-16 (validate_rtc_0x257.py, MY2014, fully awake + both buses drained). Stable payload FF 78 22 <b3> 19 06 <b6> E0. byte0/2 = FF/22 fixed header (NOT time). BYTE1 CORRECTED 2026-08-16: it is NOT a fixed header -- it is the relayed BATTERY VOLTAGE (c_BatteryVoltage_Relay, V=byte1*0.05+6). It read 0x78 (=12.0V) during the RTC test only because the battery was static; validate_battery_relay_hs.py injected MS 0x1A8 and byte1 tracked it 1:1 (r_volt=1.000). The cluster ingests 0x1A8 and relays voltage here (current -> HS 0x217 byte4). With no 0x1A8 on the bus, byte1 shows the cluster's own local reading (~12V) -- the local-vs-relayed pair is the comparison behind 'Battery Not Charging'. byte6 = 8-bit rolling counter +1/frame, wraps 0..255 (c_RTC_FrameCounter_8 -- the real counter). byte3 = 4-bit derived nibble = (byte6+10) mod 16 (c_RTC_DerivedNibble). byte4=0x19=25 and byte5=0x06=6 are fixed and are a PLAUSIBLE day/month (i_RTC_Day/i_RTC_Month) -- but the RTC is NOT set to a known time (showed 25 Jun while real date 16 Aug), so this is i_: positions are a valid day/month, meaning unconfirmed until the RTC is set to a known date. byte7 = 0xE0/0xC0 (bit5 toggles on repeated frames), status/validity u_. CORRECTION: the earlier DBC put RTC_FrameCounter on byte3 and called byte6 RTC_Check; that (and byte4=0xD8 'can't be a day') came from cross-platform, non-MY2014 candumps and is retracted -- MY2014 has the 8-bit counter on byte6 and byte3 as the derived nibble.";
 
-CM_ BO_ 661 "c_RPM_0x295: CONFIRMED, facelift XF250. Bytes 6-7 (BE): raw16 = 0x8000 + rpm (rpm < 0x2000). byte5 = 0xFF - byte7 (verified across 284+ samples). Re-confirmed via a fresh bench log (1783240316614_RPM.csv): manually replaying the frame blipped the tach to exactly 724 RPM repeatedly (0x82D4 & 0x1FFF = 0x02D4 = 724), matching the original decode exactly. Requires 0x4D5 (ECM presence) to be trusted -- without it, RPM RAW reads as the invalid sentinel in ETM regardless of what''s sent on 0x295 itself.";
+CM_ BO_ 661 "c_RPM_0x295: CONFIRMED, facelift XF250. Bytes 6-7 (BE): raw16 = 0x8000 + rpm (rpm < 0x2000). byte5 = 0xFF - byte7 (verified across 284+ samples). Re-confirmed via a fresh bench log (1783240316614_RPM.csv): manually replaying the frame blipped the tach to exactly 724 RPM repeatedly (0x82D4 & 0x1FFF = 0x02D4 = 724), matching the original decode exactly. Requires 0x4D5 (ECM presence) to be trusted -- without it, RPM RAW reads as the invalid sentinel in ETM regardless of what''s sent on 0x295 itself. BATTERY-WARNING GATE (from L322/L405/XJ CAN code docs, review 2026-08-16): the 'battery/charging' warning is RPM-gated -- shown 'if the rpm is less than 0x190 (375 rpm)'. So with RPM=0/absent (as in the MS 0x1A8 voltage-sweep bench test) the cluster treats the engine as not running and asserts 'Battery Not Charging' regardless of the injected battery voltage. Untested hypothesis for clearing it: send RPM > 375 here (with 0x4D5) AND the 0x215 charging-fault bit clear -- to be bench-verified.";
 CM_ BO_ 665 "u_GearKnobModule_0x299: From the same facelift logs. Completely static payload (00 00 00 00 00 00 18 74) across all observed gear states and the wake sequence, ~65-100ms interval. Undecoded -- possibly a module identity/capability frame rather than a state broadcast, given it never changes.";
 CM_ BO_ 667 "c_EBD_Status_0x29B: CONFIRMED by bench test -- payload 3F FE 00 70 20 03 00 00 clears the EBD FAULT warning. Also involved in clearing the BRAKE warning indicator, but that required BOTH this frame AND shorting pins 1 & 25 on cluster connector B (the Brake Fluid Switch, normally-closed) -- the brake warning is not resolved by CAN data alone, it also needs the physical brake fluid level switch satisfied. This exact payload matches the static baseline this project had already been using for 0x29B before this confirmation (previously logged as unconfirmed/no-effect-alone in earlier isolation tests -- now confirmed effective, at least for EBD, once combined with other frames now active (0x3EB, 0x39A, 0x3F3, etc.) and/or the physical brake switch fix). Speed encoding in bytes 6-7 (currently 0x00 0x00) still unconfirmed for its own sake -- this promotion is specifically for the EBD/brake warning effect, not a claim that speed itself is solved.";
 CM_ BO_ 672 "i_GearKnobStatus_0x2A0: From the same facelift XF250 gear-knob logs as 0x3F3/0x312, NOT yet independently bench-tested. ~1.6-1.8ms interval (fast). byte0 static 0x00, byte1 is a 15-value rolling counter (0x60-0x6E), byte2 = byte1 + 0x22 (constant offset), byte3 static 0x00, byte7 static 0x21 regardless of gear. Bytes 4-6 carry gear state, two combos observed: Park = 80 FF 7F, Reverse-ish = 00 FE FF (captured during a wake/raise/reverse/park sequence -- gear correlation inferred from sequence position, not independently confirmed against a labelled state). Likely a second, faster gear/knob-position broadcast alongside 0x3F3 -- role vs 0x3F3 not yet understood (redundant status vs a different consumer module). CONFIRMED ''not needed'' for core gear-selector function per SomersetEV/LandRover-rotary-gear-change (explicitly marked ''(Not needed)'' with a matching byte table for bytes 3-6). Low priority for further decode work.";
@@ -309,9 +385,12 @@ CM_ BO_ 672 "i_GearKnobStatus_0x2A0: From the same facelift XF250 gear-knob logs
 CM_ BO_ 712 "c_ADCM_Status_0x2C8: CONFIRMED by bench test -- drives ADCM (Adaptive Damping Control Module) status. Same FAULTY -> CONNECTED -> MISSING pattern as 0x422/0x35F/0x3CF/0x4D5. Payload content not yet decoded -- presence alone was sufficient.";
 CM_ BO_ 786 "i_GearSelectorLock_0x312: CROSS-CONFIRMED by SomersetEV/LandRover-rotary-gear-change (same byte0/1/2 mapping, labelled ''from selector'' i.e. a status response rather than a command). byte7 is documented there as a gear-dependent cycling counter (not static as modeled here) -- each gear''s cycle builds on the previous gear''s count before settling. Not yet incorporated into our own counter logic. The byte1 extra-bit anomaly (0x11/0x21) seen nested inside the 0x422 byte6=0x96 window is now read as a secondary reaction to a Dynamic/Snow mode request rather than a Park Brake/Ignition event (see 0x422 comment) -- video review confirmed neither of those buttons was tested in this session. Per openinverter.org wiki/forum (same source as above): knob lock/unlock is gated by a physical Park/brake-pedal-switch pin (pin 14 on the 22-way connector, pin 10 on the 12-way) -- the community''s own attempts to solve lock/unlock via CAN alone were unsuccessful, suggesting byte1''s lock state may be a status echo of that physical pin rather than something purely CAN-commanded. ETM NOTE: Module Status test shows GSM as FAULTY while TCM shows CONNECTED (with 0x3F3 active but 0x312 disabled/ENABLE_312=false in hs.js) -- user hypothesis: GSM specifically needs 0x312, which hasn''t been enabled yet. Worth testing with ENABLE_312=true to see if GSM moves to CONNECTED. RULED OUT (partial): ENABLE_312 set true on the bench, GSM module status STILL shows FAULTY -- 0x312 alone does not satisfy GSM presence. Other gear-knob-related candidates (0x2A0, 0x299, 0x422) remain untested for this specific purpose -- also possible GSM needs a different signal entirely (e.g. a start-control/SCU-style handshake) not yet identified.";
 
-CM_ BO_ 823 "c_ClusterOwned_DoorStatus_0x337: CONFIRMED cluster-owned (TX by the cluster itself, per user) -- DO NOT TRANSMIT, same category as 0x397/0x457 (risk of bus ID collision). byte2 static at 0x3F on the bench (all doors/trunk/hood shut) -- matches the L322 doc bit table exactly if bits mean ''closed'' when set: mask 0x01=fl door, 0x02=fr door, 0x04=rl door, 0x08=rr door, 0x10=trunk, 0x20=hood -- 0x3F sets all six bits, consistent with a stationary bench setup with everything shut.";
+CM_ BO_ 823 "c_ClusterOwned_DoorStatus_0x337: CONFIRMED cluster-owned (TX by the cluster itself) -- DO NOT TRANSMIT, same category as 0x397/0x457 (risk of bus ID collision). byte2 carries door state: mask 0x01=fl door, 0x02=fr door, 0x04=rl door, 0x08=rr door, 0x10=trunk, 0x20=hood (bit SET = closed); 0x3F = all shut. INPUT->OUTPUT BENCH-CONFIRMED 2026-08-16 (validate_door_causation.py): driving the MS door INPUT 0x0A8 with byte5=0x3F then 0x3E made THIS frame's byte2 follow (0x3F -> 0x3E, 166 vs 163 frames), directly proving bit0 = Front-Left (c_Door_Front_Left_Closed). The other five bits (FR/RL/RR/trunk/hood) follow the same byte2 layout by analogy but were not individually toggled -- i_ until each is driven the same way.";
 CM_ BO_ 863 "c_ACC_Status_0x35F: CONFIRMED by bench test -- drives ACC (Adaptive Cruise Control) module status. Same state-machine pattern as 0x422->GSM: FAULTY (never sent) -> CONNECTED (enabled) -> MISSING (disabled again). Payload content not yet decoded bit-by-bit -- presence alone was sufficient for this test. RR/XJ doc bits for this ID (0.08 beep, 0.10 beep, cruise control not available) not yet independently verified.";
 CM_ BO_ 880 "i_LEDBacklight_0x370: Sourced from a different openinverter.org forum contributor (not Tom-evnut, SomersetEV, or VanGogh) in the same GSM thread, testing a Gen 1 GSM part number JLR GJ32-7E453-AB. byte6 = backlight dimmer (0x00=0%, 0xFF=100%), byte7 = backlight on/off (0x00=off, 0xFF=on). Poster noted they hadn''t found anything else on this ID. Not present in any of our own pulled logs (jag-knob/sport/wake/rotate/awake-lower-knob) -- unconfirmed against our own data, single-source.";
+
+CM_ BO_ 487 "i_HS_ClusterRTR_0x1E7: REMOTE (RTR) frame, DLC=1, NO DATA. BENCH-CONFIRMED: on a re-run with the RTR column visible in SavvyCAN the frame shows RTR=1, Len=1 and empty data. Transmitted by the cluster itself as the very first frame on the HS bus at power-on, then not repeated. The 0xAA 'payload' seen in earlier CSV exports was an export artifact -- SavvyCAN's CSV export drops the RTR flag and materialises a phantom data byte for remote frames. By CAN definition this is a remote transmission REQUEST for ID 0x1E7 (asking whatever node owns 0x1E7 to transmit it), not a data 'presence/hello' frame -- the earlier alternating-bit-pattern interpretation is void. Its functional purpose (what the cluster expects in reply, if anything) is still i_/unknown. Cluster-owned: observe only, do not transmit with the cluster present. NB: DBC has no native RTR flag -- the remote nature is recorded here in the comment and name only.";
+CM_ BO_ 1511 "u_HS_IPC_Unknown_0x5E7: single DLC=1 frame, CSV shows payload 0x8A, seen exactly once as the first frame at power-on on HS in one IPC-alone bench capture (Cluster-CANMS-Connect_14). Undecoded. STRONG HYPOTHESIS (untested for this ID): 0x5E7 is itself a REMOTE (RTR) frame whose 0x8A is a phantom export byte, exactly like 0x1E7 -- which was BENCH-CONFIRMED as RTR=1/Len=1/no-data on a re-run with the RTR column visible, its own CSV 0xAA proven to be an export artifact. 0x5E7 shares the same DLC=1 / first-at-power-on shape and sits at 0x1E7+0x400. Not yet directly observed with the RTR column, and single-occurrence keeps a bus-error-fragment reading alive. u_ -- needs a bench re-run watching 0x5E7's RTR bit to confirm.";
 
 CM_ BO_ 919 "u_Unknown_0x397: Byte 1 alternates 0x80/0x00, byte 5 static 0x3C (60 dec), byte 7 alternates 0x10/0x00. Pattern suggests a status/valid flag pair -- undecoded.";
 CM_ BO_ 922 "c_AirbagSeatbelt: CONFIRMED by bench test -- payload 80 00 00 00 00 00 32 0E suppresses both the airbag yellow warning and the seatbelt red warning (user-confirmed, exact bytes). On closer bit inspection this is actually CONSISTENT with the previously modeled bits, not contradictory: byte6=0x32 has bits 0x04 (airbag) and 0x08 (airbag flash) clear, byte7=0x0E has bit 0x01 (belt) clear -- all three read as ''off'', matching suppression. The extra set bits in this real payload (byte0=0x80, byte6 bits 0x02/0x10/0x20, byte7 bits 0x02/0x04/0x08) are additional data not yet modeled -- possibly a counter or other airbag/belt substatus -- worth decoding separately, but they don''t conflict with the airbag/belt bit assignments themselves. Using this exact payload as the confirmed default going forward since it''s the directly-tested one; whether the original simpler all-zero payload also works is unconfirmed (not A/B tested against this one). ETM CONFIRMATION: Module Status test shows RCM (Restraints Control Module) as CONNECTED with this frame active -- confirms this frame satisfies RCM module presence, not just the warning lights.";
@@ -332,7 +411,7 @@ Confirmed status bits:
 - byte0 mask 0x10 must be set to avoid Gearbox Fault.
 - byte1 mask 0x04 must be set to avoid Gearbox Fault.
 - byte2 mask 0x20 = Gearbox Overheating.
-- byte2 mask 0x01 = Manual Shift Disabled.
+- byte2 mask 0xb0 = Manual Shift Disabled.
 
 byte1=0x24 is shared by Reverse/Drive/Sport; byte4/byte6 are what actually distinguish those gears.
 
@@ -354,13 +433,19 @@ A user-captured PARK frame on the bench (1C 26 00 82 FF 7F 00 80) matched byte4/
 
 Cross-confirmed by SomersetEV/LandRover-rotary-gear-change, which contains an identical gear table. That project labels this frame as originating from the transmission ECU rather than a tester. Functional notes from that source indicate bytes 0, 4, 5 and 6 are required to raise the GSM rotary knob, while byte1 is not required for knob raise and does not affect the illuminated gear indicator.
 
-PROVENANCE NOTE: the knob raise/lower and selector illumination behaviour described above refers to the physical GSM console from third-party testing and has not been verified on this project's own hardware. The gear-state byte values themselves are directly bench-confirmed for driving the IPC gear display.";
+PROVENANCE NOTE: the knob raise/lower and selector illumination behaviour described above refers to the physical GSM console from third-party testing and has not been verified on this project's own hardware. The gear-state byte values themselves are directly bench-confirmed for driving the IPC gear display.
+
+FORMULA CONFIRMED BY BENCH TEST (hs.js v4 transmit script, generalizes the per-gear table above): byte4 = ~byte6 (bitwise NOT of Mode), byte5 = ~byte7 (bitwise NOT of ManualGear), byte3 = byte2 + byte6 + byte7 + 2 (mod 256) -- this reproduces every gear-dependent offset in the table above exactly (e.g. Park: byte6=00,byte7=80 -> 0+128+2=0x82; Reverse: byte6=01,byte7=00 -> 1+0+2=0x03; Sport: byte6=08,byte7=00 -> 8+0+2=0x0A). byte0/byte1 in the transmit script are held at the simplified constant 0x10/0x04 (just the required fault-avoidance bits from the 'Confirmed status bits' section above, rather than the exact 0x7C/0x24-style values seen in passive captures) and this has been bench-confirmed to work.
+
+MANUAL MODE gear table (byte2=0x00, Mode/byte6=0x08 constant, ManualGear/byte7 selects the gear): M1=0x01, M2=0x02, M3=0x04, M4=0x08, M5=0x10, M6=0x20, M7/Sport=0x40 (selects Sport mode), M8/NoSelection=0x80 (also the value Park uses on byte7, with Mode/byte6=0x00 -- see Park row above). Byte3/4/5 for each row follow the same byte4=~byte6, byte5=~byte7, byte3=byte2+byte6+byte7+2 formula.
+
+NORMAL (non-manual) selector: byte7=0x00, byte6=Mode (Reverse=0x01, Neutral=0x02, Drive=0x04, Sport=0x08).";
 
 
 CM_ BO_ 1024 "i_CCF_Block1_0x400: Mirrored by IPC from MS bus to HS bus. Part of the JLR Car Configuration File (CCF) broadcast -- Block One, EUCD platform. byte0 = line number within the CCF (the frame cycles through sequential lines, not a single static payload -- matches the multi-step transition pattern observed in candump analysis). Not yet independently probed for effects -- 0x401 (Block Two) is where the confirmed TPMS effect and VIN data live, see that message''s comment.";
 CM_ BO_ 1025 "c_CCF_Block2_0x401: Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
-CM_ BO_ 1029 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
-CM_ BO_ 1028 "JLR Vehicle Status 0x405 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
+CM_ BO_ 1029 "JLR Vehicle Status 0x405 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
+CM_ BO_ 1028 "JLR Vehicle Status 0x404 multiplexed message. Mux 0x02 carries battery voltage at byte 4, scale 0.25V. Mux 0x10/0x11/0x12 carry VIN ASCII segments.";
 CM_ BO_ 1031 "c_CCF_Block2_0x401: Mirrored by IPC from MS bus to HS bus. Part of the JLR Car Configuration File (CCF) broadcast -- Block Two, T5 platform. byte0 = line number within the CCF. Lines 01/02/03 contain the VIN (line 01 starts with vehicle type e.g. L359, brand e.g. Land Rover, model year e.g. 14). CONFIRMED by direct bench test: this frame creates and clears the tire pressure (TPMS) warning -- exact line/byte within the CCF not yet isolated, only that the overall frame is responsible (0x504, 0x503, and 0x396 were all tested and ruled out). MAJOR FINDING: modifying CCF content and feeding it to the FCDIM (display/MMI module) changes which vehicle software identity it loads -- e.g. switching between Range Rover and Jaguar configurations. This is a shared JLR display platform mechanism, not XF250-specific -- worth treating CCF content with real care given it can reconfigure what the display module believes it is. NEXT STEP: isolate which specific CCF line/byte controls the TPMS warning specifically, rather than replaying the whole block. LINE 0x1C CONFIRMED by direct bench test: byte3 mask 0x80 = Blind Spot Monitor Not Available, byte3 mask 0x02 = Tire Pressure System Fault. This is the specific line/byte within the CCF broadcast responsible for the TPMS and BSM warnings (see hs_bus.dbc for the per-line trigger/clear payload table already extracted from candumpStartup.log vs candump-2020-04-24_130142.log for this same line). Resolves the earlier open question of exactly which CCF line controls these warnings. IMPORTANT NUANCE (ETM): even with this frame''s TPMS-fault bit cleared and the warning icon suppressed, ETM Module Status test still shows TPMS as FAULTY -- confirms warning-suppression and module-presence are SEPARATE mechanisms. This frame only handles the icon; making TPMS itself show CONNECTED would need a genuine TPMS module status frame, not yet found (separate open problem, not solved by the CCF fix).";
 
 CM_ BO_ 1058 "c_HS_GSM_ETM_Status_DynamicWinterModeRequest_0x422: ETM/GSM status and LCD message request frame. Byte 6 contains a bitfield used by the IPC to request Terrain Response / Dynamic Mode LCD messages (Racing Flag icon). Confirmed message combinations:
@@ -377,14 +462,25 @@ Bits are currently exposed individually because the IPC interprets combinations 
 Observed values: 0x60 = Park; 0x67 = any non-Park gear. Believed to be a status echo of the physical IGN-pin / rotary knob position rather than a CAN command. Bench and community evidence indicate the knob raise/lower mechanism on Gen 1 GSM units is controlled by the IGN input pin, not by CAN. Transmitting frame 0x422 is required for GSM module presence, but the specific byte 7 value tested does not affect the module-status check.";
 
 
-CM_ BO_ 1111 "u_Unknown_0x457: Bytes 0/1 vary, bytes 2/5/7 stable (0x66/0x60/0x6C). Undecoded. Additional observation: byte2=0x00 has been associated with 'Blue light off' state in one dataset; no corresponding 'on' state confirmed. Possible lighting indicator (DRL/high-beam/aux).";
+CM_ BO_ 1111 "i_HS_IPC_LightingStatus_0x457: CLUSTER-OWNED HS OUTPUT -- DO NOT TRANSMIT (bus-ID collision). byte2 is a lighting-status field the cluster gateways from its MS input 0x068 byte7. BENCH-CONFIRMED 2026-08-16 (validate_lights_0068_to_0457.py, with 0x513 RSJB present so 0x068 is processed): byte2 bit4 (0x10) = c_Sidelights_Mirror, a 1:1 mirror of 0x068 byte7 bit3 (sidelights) -- b7 bit3 0->1 drove byte2 0x66->0x76, all other patterns 0 (c_). byte2 bits5&6 (0x60) = i_AutoLightsMode, driven by 0x068 byte7 bits4&5 (the auto-lights-mode field) as an enum remap, NOT a bit-copy: observed b7[5:4]->byte2[6:5] = 00->11, 01->11 (b7 bit4 alone no change), 10->00, 11->10 (b7 bit5 is the active driver). The relationship is bench-confirmed causal; the enum's meaning is i_ pending correlation with physical auto-lights switch positions/ETM. Confirms the earlier guess (byte2 base 0x66, 'possible lighting indicator'). Bytes 0/1 vary; byte2 bits1&2 (0x06) constant here.";
 CM_ BO_ 1117 "u_Unknown_0x45D: Three observed states, bytes 5/6 stable (0x05/0x47). Undecoded.";
 CM_ BO_ 1143 "i_ESCL_SteeringLock_0x477: STRONG CANDIDATE for the ESCL/steering-column-lock status this project needs -- this project has no physical ESCL module, only the cluster, so this frame would need to be emulated. Sourced from L322/XJ/L405 CAN code docs (''minimum for tidy''), NOT yet bench-tested. Byte/bit layout: bytes 0-3 possibly carry a fuel-related value (''0-3 fuel'', notation ambiguous, may overlap with the separate 0x068 fuel mechanism -- needs clarification). byte6 (''6.x'' notation): mask 0x01 = STEERING COLUMN LOCKED, mask 0x08 = engine stop button pressed, mask 0x10 = ignition is on (possibly redundant with the already-confirmed 0x07D ignition state), mask 0x40 = washer fluid low. byte7: smart key status bits (0x4=not found, 0x8=recognized-press-brake, 0xC=check smart key per L322; XJ additionally lists 0x10=transmission not in park, 0x20=press brake when starting). PRIORITY TEST: try transmitting this frame with the steering-column-locked bit CLEAR (0) and ignition-on bit set to match real state, to see if it satisfies whatever is latching the STEERING COLUMN LOCKED fault -- per the workshop manual PDF, this fault also blocks engine start, matching the reported symptom. BENCH TESTED: NO EFFECT on STEERING COLUMN LOCKED with the steering-locked bit clear and ignition-on set. User hypothesis: the 0x4xx range in this doc family may be status-only broadcasts (i.e. something the cluster or another module transmits outward, not something an external device can inject to change behaviour) -- consistent with 0x397/0x457/0x337 all turning out to be cluster-owned in this same ID neighbourhood. NEXT CHECK: verify Rx/Tx direction for 0x477 the same way as those (does it already appear as Rx from the cluster when not transmitted?) before pursuing this ID further for ESCL.";
 CM_ BO_ 1149 "u_Unknown_0x47D: Burst pattern at startup only, settles to 00 00 BF 00 18 00 00 00. Undecoded.";
 
 CM_ BO_ 1205 "c_ASL_LED_0x4B5: CONFIRMED toggle, sourced from VanGogh/GSM forum table (forums.moderndaymods.com). VanGogh is a different person from Tom-evnut (gear-knob repo author) -- both posted in the same openinverter.org GSM thread but are separate contributors. byte3=0x00 = ASL LED off, byte3=0x80 = ASL LED on, rest of payload zero in both. ASL likely ''Adaptive/Automatic Speed Limiter''. Not yet independently bench-tested on the XF250 facelift cluster. PROVENANCE NOTE: same as 0x3EB -- this is the GSM console''s own ASL button backlight, on hardware we don''t have, tested by someone else years ago. Not verified against the XF250 cluster''s own displays/icons.";
 CM_ BO_ 1237 "c_ECM_Status_0x4D5: CONFIRMED by bench test -- drives ECM module status (same FAULTY -> CONNECTED -> MISSING pattern). MAJOR CROSS-DEPENDENCY: also required for RPM (0x295) to be trusted -- ETM RPM RAW reads the invalid sentinel without this frame present, regardless of 0x295 content. ALSO enables the fuel rolling count (previously logged as broken/invalid in ETM Rolling Counts test) -- this may fully explain that earlier issue without 0x513 needing an internal counter of its own; revisit once 0x4D5 is part of the standard baseline. Sample payload from bench log: 02 A7 24 0C 60 F4 92 28 (settled/repeated value) -- byte0 and byte2 showed minor variation earlier in the same log (04/02, 3C/41/A7, 28/27/25/24), structure not yet decoded. ALSO CARRIES ENGINE TEMPERATURE: not sending this frame causes an Engine Temperature Indication Fault and lights the MIL lamp -- matches the workshop manual PDF (''ENGINE TEMPERATURE INDICATION FAULT: engine temperature signal is no longer being received''). Exact byte/bit for the temperature value not yet isolated within this frame''s undecoded structure.";
-CM_ BO_ 1279 "c_RTCTimestamp: Cluster-originated, ~170ms interval, increments ~4 ticks/sec during capture (sub-second resolution counter, not a 1Hz tick).";
+CM_ BO_ 1279 "c_HS_IPC_RTCTimestamp_0x4FF: Cluster-originated 32-bit clock counter (bytes 4-7, big-endian). BENCH-CONFIRMED 2026-08-16 (validate_clock_counter.py): increments ~10 Hz (every ~100ms; measured 10.01/s), and is the SAME counter, in lock-step, as MS 0x1D8 (both started 0x5C0BEDC4). NOT a 1 Hz seconds clock -- the earlier ''unix epoch seconds'' unit is corrected to a counter. Cluster-owned: observe only.";
 
-CM_ SG_ 1279 c_UnixTimestamp "Cluster's stored RTC as Unix epoch seconds, big-endian. Confirms 0x257 HH:MM:SS. NOTE: on first power-up after extended storage this reflects the last time the cluster saw a live RTC source (e.g. ~2018 on a unit unused since then) -- not the current date/time.";
+CM_ SG_ 1279 c_ClockCounter_32 "32-bit big-endian counter, bytes 4-7. Magnitude resembles a unix-epoch-seconds value (~Dec 2018, likely the last-seen-RTC seed on a long-stored unit), but the observed ~10 Hz tick rules out a live seconds clock -- do NOT decode as wall-clock seconds. Mirrored on MS 0x1D8. Relationship to the 0x257 clock frame not yet established.";
 CM_ SG_ 1297 i_InitState_b1 "HS-side cluster init state machine. Observed sequence: alternates 0x01/0x02 (~10 frames) then locks to 0x04. NOT the same as MS-bus 0x511 (fuel display enable) -- same ID, different bus, different meaning, different direction.";
+CM_ SG_ 661 c_RPM_Raw "Corrected to big-endian (@0): D6-D7, low 13 bits = rpm (the 0x8000 bit sits above the field). Was @1 Intel which byte-swapped it. Confirmed: L322 D6D7=82D4 -> 724 rpm, matching the bench.";
+CM_ SG_ 523 i_VehicleSpeed "Cross-platform candidate (Racelogic .REF, XK X150): vehicle speed D6-D7 big-endian; consistent with this projects own bench speed RE (bytes 6-7). i_, XK scale, not X250-calibrated.";
+CM_ SG_ 523 i_BrakePressure "Cross-platform candidate (Racelogic .REF, XK X150): brake pressure D4-D5. i_, not bench-confirmed on X250.";
+CM_ SG_ 1237 i_OilTemperature "Cross-platform candidate (Racelogic .REF, XK X150): oil/engine temp D6; consistent with this frames note that 0x4D5 carries engine temperature. i_, not isolated on the X250 bench.";
+CM_ BO_ 587 "i_HS_WheelSpeeds_Front_0x24B: cross-platform candidate from Racelogic .REF (Jaguar XK X150, same generation/ID scheme). Front wheel speeds + yaw. Bit positions Motorola->DBC translated and cantools-verified (translation bench-confirmed via 0x295). Observed on 2010MY XF HS, NOT facelift-bench-confirmed. i_.";
+CM_ BO_ 640 "i_HS_SteeringAngle_0x280: cross-platform candidate (Racelogic .REF, XK X150). Not bench-confirmed on X250. i_.";
+CM_ BO_ 660 "i_HS_WheelSpeeds_Rear_0x294: cross-platform candidate (Racelogic .REF, XK X150) -- rear wheel speeds + lateral accel. Not bench-confirmed on X250. i_.";
+CM_ BO_ 693 "i_HS_ThrottlePosition_0x2B5: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander/Evoque map 0x2B5 to wheel speed instead. Not bench-confirmed on X250. i_.";
+CM_ BO_ 789 "i_HS_AirTemperature_0x315: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander maps 0x315 to clutch position. Not bench-confirmed on X250. i_.";
+CM_ BO_ 851 "i_HS_GearSelector_0x353: cross-platform candidate (Racelogic .REF, XK X150) -- gear in D3 low nibble. Not bench-confirmed on X250. i_.";
+CM_ BO_ 979 "i_HS_TransmissionOilTemp_0x3D3: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander maps 0x3D3 to coolant temp. Not bench-confirmed on X250. i_.";

@@ -71,3 +71,11 @@ being fully awake (MS bus active, HS heartbeat/output frames present).
   conflict.
 - A dual-channel CAN interface (e.g. a Raspberry Pi with a 2-channel CAN HAT) is
   recommended so MS and HS can be driven simultaneously and independently.
+- **CANable/candlelight on Windows:** SavvyCAN and Python (`python-can` with the
+  `gs_usb` interface) can both use the device while it's bound to the **WinUSB**
+  driver — no need to switch to libusbK for Python. The catch is that pyusb's
+  automatic backend lookup won't find `libusb-1.0.dll` unless it's on the
+  standard DLL search path; copy the DLL shipped by the `libusb` pip package
+  (`...\site-packages\libusb\_platform\windows\x86_64\libusb-1.0.dll`) into
+  `C:\Windows\System32` once, and both tools work off the same WinUSB binding
+  with no per-script workaround needed.
