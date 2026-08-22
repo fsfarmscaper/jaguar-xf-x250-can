@@ -8,10 +8,9 @@ rig, but the resulting DBC and documentation are published here in case they're 
 to anyone doing cluster swaps, retrofits, diagnostics, or further reverse engineering
 on this platform.
 
-**Status: work in progress.** MS bus is well-characterised on the facelift cluster.
-HS bus is characterised for the pre-facelift platform (via Rhys Morgan's prior work)
-but **not yet confirmed working on the facelift (2012+) IPC** — see
-[Open Problem](#open-problem-facelift-hs-bus) below.
+**Status: work in progress.** Both MS and HS buses are well-characterised on the facelift
+(2012+) cluster with extensive bench validation. Pre-facelift reference data is retained for
+compatibility.
 
 ---
 
@@ -82,51 +81,58 @@ independently bench-confirmed) · `u_` unknown (frame identified, content undeco
 | 0x2A8 | BCM settings | i_ | bitfield | Bidirectional, cluster reads only |
 | 0x088 | HS wake trigger | c_ | byte 3 = 0x06 | **MS-only** — confirmed HS-only TX does not wake cluster |
 
-### HS Bus — pre-facelift (Rhys Morgan reference, untested on facelift)
+### HS Bus — Facelift (2012+) — Gauge & Sensor Inputs
 
 | CAN ID | Name | Confidence | Decode |
 |--------|------|-----------|--------|
-| 0x099 | RPM | i_ | bytes 4–5 BE, mask `& ~0xE000` |
-| 0x179 | Vehicle speed | i_ | bytes 2–3 BE, `raw × 0.65 / 100 = km/h` |
-| 0x3B9 | Oil temp | i_ | byte 5, `raw − 60 = °C` |
-| 0x0D9 | Coolant temp | i_ | byte 0, `raw − 60 = °C` — no gauge on this cluster, message-centre only |
+| 0x295 | RPM (ECM) | c_ | bytes 6–7 BE, `raw & 0x1FFF = rpm` (top 3 bits masked) |
+| 0x20B | Wheel speeds / ABS | c_ | bytes 6–7 = vehicle speed (mph formula: `raw × 0.0064310 + 1.20`) |
+| 0x294 | Wheel speeds rear | i_ | rear wheel speeds + lateral accel |
+| 0x24B | Wheel speeds front | i_ | front wheel speeds + yaw rate |
+| 0x3D3 | Transmission oil temp | i_ | byte 4 LE, `raw − 40 = °C` |
+| 0x4D5 | Engine temp (ECM) | c_ | byte 6, `raw − 60 = °C` (part of multi-signal frame) |
+| 0x3F3 | Gear position (TSM) | c_ | fully decoded with gear/mode table; includes manual/sport modes |
+| 0x315 | Air temp | i_ | ambient/outside air temperature |
+| 0x280 | Steering angle | i_ | steering wheel angle |
+| 0x353 | Gear selector | i_ | gear signal (separate from 0x3F3) |
+| 0x2B5 | Throttle position | i_ | throttle angle percentage |
 
-### HS Bus — facelift cluster self-output (new, this project)
+### HS Bus — Facelift Cluster Outputs & Status Frames
 
-Captured directly from the cluster's own HS transmissions at power-on. Not present
-in any pre-facelift documentation — appears to be facelift-specific or simply
-undocumented previously.
-
-| CAN ID | Confidence | Decode | Notes |
-|--------|-----------|--------|-------|
-| 0x217 | c_ | static | HS heartbeat, ~8ms |
-| 0x257 | c_ | byte 3/4/5 = HH/MM/SS | Real-time clock |
-| 0x4FF | c_ | bytes 4–7 BE uint32 | Unix timestamp, cluster's stored RTC |
-| 0x4F7 | i_ | bytes 4–5 / 6–7 | Possible odometer / lifetime counter |
-| 0x511 | i_ | byte 1 state sequence | HS-side init state machine (separate from MS 0x511) |
-| 0x250, 0x337, 0x397, 0x457, 0x45D, 0x47D | u_ | — | Present, undecoded |
+| CAN ID | Name | Confidence | Notes |
+|--------|------|-----------|-------|
+| 0x217 | Battery relay | c_ | Battery charging current relay from MS, ~8ms |
+| 0x257 | RTC / clock | c_ | Battery voltage relay + day/month + rolling counter |
+| 0x4FF | RTC timestamp | c_ | 32-bit counter (~10 Hz), cluster's real-time base |
+| 0x337 | Door status | c_ | FL/FR/RL/RR/trunk/hood closed flags (cluster-owned) |
+| 0x457 | Lighting status | i_ | Sidelights + auto-lights mode (mirrored from MS) |
+| 0x400–0x407 | CCF blocks | c_ | Car Configuration File broadcast (MS→HS gateway); controls TPMS/BSM warnings |
+| 0x404, 0x405 | Vehicle status | c_ | Multiplexed: battery voltage, VIN segments |
+| 0x3F5 | ECM faults | c_ | Oil level status, engine fault, restricted performance flags |
+| 0x4B5 | ASL/DTC status | c_ | Check engine light, oil level system fault, ASL indicator |
+| 0x29B | DSC/ABS status | c_ | DSC/ESP/ABS faults and state machine |
+| 0x3EB | DSC/ABS status (alt) | c_ | Park brake indicator, EBD fault, emergency brake assist |
+| 0x422 | GSM/ETM mode | c_ | Dynamic/Winter mode request, ETM program status (GSM) |
+| 0x35F | ACC status | c_ | Adaptive cruise control module presence |
+| 0x3CF | AFLS status | c_ | Adaptive front lighting system module presence |
+| 0x2C8 | ADCM status | c_ | Adaptive damping control module presence |
+| 0x39A | Airbag/seatbelt | c_ | Airbag and seatbelt warning indicators |
+| 0x53F | EPB status | c_ | Electric parking brake |
+| 0x250, 0x397, 0x45D, 0x47D | Unknown | u_ | Present but undecoded; may be module presence frames |
+| 0x1E7 | Cluster RTR | c_ | Remote transmission request (cluster-owned, observe only) |
 
 Full DBC: [`hs_bus.dbc`](hs_bus.dbc) · [`ms_bus.dbc`](ms_bus.dbc)
 
 ---
 
-## Open Problem: Facelift HS Bus
-
-The pre-facelift HS gauge frames (0x099 RPM, 0x179 speed) documented by Rhys Morgan
-**do not produce any gauge response on the facelift cluster**, even with the cluster
-fully awake and displaying. MS-bus wake (0x088) and the cluster's own HS output
-frames are confirmed working — the gap is specifically the HS gauge *input* frames.
-
-**What's needed:** a short HS CAN capture (30–60 seconds, idle, OBD2 port,
-500 kbps) from a genuine 2012–2015 facelift XF. If you have one, see
-[CONTRIBUTING.md](CONTRIBUTING.md).
-
----
-
 ## Sources & Credits
 
-- **Rhys Morgan** — [`github.com/rhysmorgan134/x250-can`](https://github.com/rhysmorgan134/x250-can) — primary reference for pre-facelift X250 CAN architecture, JS signal decoders (`Id40.js`, `HsInfo.js`, `MsInfo.js`, and others), and bus split (MS/HS). This project would not exist without his prior work — if you're here for X250 CAN, go read his repo too.
-- Bench testing, facelift-specific captures, and DBC compilation: this project.
+- **Rhys Morgan** — [`github.com/rhysmorgan134/x250-can`](https://github.com/rhysmorgan134/x250-can) — X250-specific CAN signal decoders (`Id40.js`, `HsInfo.js`, `MsInfo.js`, and others) and bus architecture reference (MS/HS split). Note: his repo's candumps are primarily Freelander 2, not X250 — the platform specifications are the useful part.
+- **Joshua Denson** — [`github.com/joshuadenson`](https://github.com/joshuadenson) — provided 2015 X250 candumps that were instrumental in validating and expanding the HS bus reverse engineering.
+- **Tom-evnut** — Land Rover rotary gear-change (GSM) project — provided facelift XF250 gear-knob CAN captures and gear-position frame decoding that directly enabled this project's comprehensive 0x3F3 (TSM gear position) implementation.
+- **SomersetEV** — cross-confirmed gear position frame definitions and GSM module operation.
+- **VanGogh & other OpenInverter forum contributors** — GSM testing and status/mode frame decode contributions.
+- Bench testing, signal isolation, facelift-specific captures, and DBC compilation: this project.
 
 ---
 

@@ -22,7 +22,8 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
  SG_ u_RSJB_Unknown_Byte2 : 16|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ u_RSJB_Unknown_Byte3 : 24|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ u_RSJB_Unknown_Byte4 : 32|8@1+ (1,0) [0|255] "" Vector__XXX
- SG_ u_RSJB_Unknown_Byte5 : 40|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ u_RSJB_Byte5_Bit40 : 40|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_RSJB_Temperature : 41|7@1+ (1,-40) [-40|80] "degC" Vector__XXX
  SG_ u_RSJB_Unknown_Byte6 : 48|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ u_RSJB_Unknown_Byte7 : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
@@ -30,7 +31,7 @@ BO_ 72 i_MS_RSJB_Status_Raw_0x048: 8 Vector__XXX
 BO_ 104 c_MS_RSJB_IPC_Data_0x068: 8 Vector__XXX
  SG_ c_FuelLevel_raw_B             : 32|8@1+ (1,0) [0|65535] "" Vector__XXX
  SG_ c_FuelLevel_raw_A             : 40|8@1+ (1,0) [0|65535] "" Vector__XXX
- SG_ c_IPC_MainBeamIndicator       : 57|1@1+  (1,0) [0|1] "" Vector__XXX
+ SG_ c_IPC_MainBeamIndicator       : 56|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsIndicator     : 59|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_SidelightsGate          : 60|1@1+  (1,0) [0|1] "" Vector__XXX
  SG_ c_IPC_AutoHeadlightsIndicator : 62|1@1+ (1,0) [0|1] "" Vector__XXX
@@ -245,12 +246,12 @@ CM_ BO_ 40 "i_GearSelector: Source Rhys Morgan Id40.js.
 Byte 4 bitmask: P=0x00 R=0x01 N=0x02 D=0x04 S=0x08.
 BENCH-CONFIRMED 2026-08-16 (search_speed_mirror_ms.py): bytes 6-7 (16-bit BE) = VEHICLE SPEED, a 1:1 mirror of the HS 0x20B raw value (the cluster re-broadcasts the speed it consumes). c_VehicleSpeed_Raw is the RAW; the raw->mph DISPLAY is CCF-biased (GROUP_CCF_EUCD_SPEEDO_BIAS grp113 / JAG_SPEEDO_PERCENTAGE_SCALE grp174=2.0% / WHEEL_DIMENSION_RIM_DIAMETER grp186, via 0x400/0x401), not a fixed constant. For THIS bench's CCF, display_mph = 0.006360*raw - 0.30 was bench-validated (30->30, 100->100 confirmed by eye) -- CCF/wheel-specific, re-fit for a different CCF.";
 
-CM_ BO_ 72 "c_MS_RSJB_Status_Raw_0x048: Provisional reverse engineering. Frame observed from multiple vehicles. Appears to originate from RSJB (Rear Junction Box). FUEL LABEL REMOVED 2026-08-16: byte4/byte5 were previously guessed as raw fuel sender values -- bench re-validation via ETM test mode confirms the cluster's FUEL INPUT is 0x068, NOT 0x048 (driving values here has no effect). Bytes 4-5 returned to u_ (unknown). The old correspondence note is retained below only as historical rationale, now superseded. Byte0/Byte1 are currently unknown status fields. Observation across two vehicles: Byte0 value FE dominates (~80% of frames) while FF occurs ~20% of frames. When Byte0=FF, Byte1 is typically 0x80; when Byte0=FE, Byte1 is typically 0x00. Pattern is periodic and independent of fuel sender changes, suggesting an alive indicator, rolling status bit, sample-valid marker, or message state field. Do not assume FE/FF represents fuel data. Byte2/Byte3/Byte6/Byte7 remain unidentified. Source: multi-vehicle candump analysis.";
+CM_ BO_ 72 "c_MS_RSJB_Status_Raw_0x048: Provisional reverse engineering. Frame observed from multiple vehicles. Appears to originate from RSJB (Rear Junction Box). FUEL LABEL REMOVED 2026-08-16: byte4/byte5 were previously guessed as raw fuel sender values -- bench re-validation via ETM test mode confirms the cluster's FUEL INPUT is 0x068, NOT 0x048 (driving values here has no effect). Byte4 is u_ (unknown). BYTE5 TEMPERATURE CONFIRMED (bench 2026-08-19): bits 41-47 carry a temperature signal, range -40..+80C, encoded factor 1.0 / offset -40 (equivalently byte5 x0.5 -40 when bit40=0; matches L322 log replay -38C/-1C). Bit40 is not part of the temperature (u_). The old fuel correspondence note is retained below only as historical rationale, now superseded. Byte0/Byte1 are currently unknown status fields. Observation across two vehicles: Byte0 value FE dominates (~80% of frames) while FF occurs ~20% of frames. When Byte0=FF, Byte1 is typically 0x80; when Byte0=FE, Byte1 is typically 0x00. Pattern is periodic and independent of fuel sender changes, suggesting an alive indicator, rolling status bit, sample-valid marker, or message state field. Do not assume FE/FF represents fuel data. Byte2/Byte3/Byte6/Byte7 remain unidentified. Source: multi-vehicle candump analysis.";
 
 CM_ BO_ 104 "c_FuelLevel: Bench confirmed (Rhys Morgan can-utils candump + multi-fill bench test). ~50ms interval. Bytes 3-4 = LE uint16 fuel level raw. CALIBRATION TABLE (raw -> %): 5259=33%, 13370=50%, 25657=66%, 28220=75%, 35604=80%. Non-linear -- piecewise interpolation required, not a simple scale factor. Bytes 5-6 static (0xD0, 0x42) -- confirmed NOT part of the fuel value. Pairs with 0x513 for needle movement (40s averaging delay).
 
 Byte 7 also carries multiple IPC indicator status bits:
-- b7.1 = Main beam indicator.
+- b7.0 = Main beam indicator.
 - b7.3 = Sidelights indicator.
 - b7.4 = Gates b7.3 when asserted; likely represents the automatic lighting mode/state that enables the sidelights indicator.
 - b7.6 = Headlights auto indicator.

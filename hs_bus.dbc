@@ -9,31 +9,9 @@ BU_: Vector__XXX
 // Jaguar XF X250 — HS Bus (500 kbps)
 // Confidence prefixes: c_ confirmed, i_ inferred, u_ unknown
 //
-// IMPORTANT: the i_RPM / i_VehicleSpeed / i_OilTemp / i_CoolantTemp frames
-// below are from Rhys Morgan's pre-facelift (2009/2010) x250-can project.
-// They are UNCONFIRMED on the facelift (2012+) cluster — transmitting them
-// produces no gauge response despite the cluster being fully awake and the
-// HS bus active. See README.md "Open Problem" section. This is the primary
-// open question this project is trying to resolve — a facelift HS capture
-// is needed to confirm or correct these frame IDs / byte layouts.
-//
 // The c_ frames in the second half of this file are confirmed by direct
 // observation of the FACELIFT cluster's own HS output at power-on, and are
 // NOT present in Rhys Morgan's pre-facelift documentation.
-
-
-BO_ 153 i_RPM_0x099: 8 Vector__XXX
- SG_ i_RPM_raw : 39|16@0+ (1,0) [0|8191] "rpm" Vector__XXX
-
-BO_ 217 i_CoolantTemp_0x0D9: 8 Vector__XXX
- SG_ i_CoolantTemp_raw : 0|8@1+ (1,-60) [-60|195] "degC" Vector__XXX
-
-BO_ 377 i_VehicleSpeed_0x179: 8 Vector__XXX
- SG_ i_Speed_raw : 23|16@0+ (0.0065,0) [0|300] "km/h" Vector__XXX
-
-BO_ 953 i_OilTemp_0x3B9: 8 Vector__XXX
- SG_ i_OilTemp_raw : 40|8@1+ (1,-60) [-60|195] "degC" Vector__XXX
-
 
 // --- Confirmed by bench test (facelift cluster) ---
 // Source for bit layouts: RR/XJ cross-platform docs, confirmed by
