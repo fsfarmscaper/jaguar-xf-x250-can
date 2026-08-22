@@ -72,30 +72,28 @@ independently bench-confirmed) · `u_` unknown (frame identified, content undeco
 
 | CAN ID | Name | Confidence | Decode | Notes |
 |--------|------|-----------|--------|-------|
-| 0x07E | Keepalive | c_ | static/rolling | ~50ms, mandatory — cluster requires this to stay alive |
-| 0x07D | Ignition state | c_ | byte 1: 0x00/0x20 | ~39ms |
 | 0x028 | Gear selector | c_ | byte 4 bitmask | Source: Rhys Morgan `Id40.js` |
 | 0x068 | Fuel level | c_ | bytes 3–4 LE uint16 | Bench-calibrated, 5 points |
-| 0x513 | Fuel display enable | i_ | — | Required for fuel needle; 40s averaging delay |
+| 0x088 | HS wake trigger | c_ | byte 3 = 0x06 | **MS-only** — confirmed HS-only TX does not wake cluster |
 | 0x208 | Climate control | i_ | bitfield | Source: Rhys Morgan `canMapping.json` |
 | 0x2A8 | BCM settings | i_ | bitfield | Bidirectional, cluster reads only |
-| 0x088 | HS wake trigger | c_ | byte 3 = 0x06 | **MS-only** — confirmed HS-only TX does not wake cluster |
+| 0x513 | Fuel display enable | i_ | — | Required for fuel needle; 40s averaging delay |
 
 ### HS Bus — Facelift (2012+) — Gauge & Sensor Inputs
 
 | CAN ID | Name | Confidence | Decode |
 |--------|------|-----------|--------|
-| 0x295 | RPM (ECM) | c_ | bytes 6–7 BE, `raw & 0x1FFF = rpm` (top 3 bits masked) |
 | 0x20B | Wheel speeds / ABS | c_ | bytes 6–7 = vehicle speed (mph formula: `raw × 0.0064310 + 1.20`) |
-| 0x294 | Wheel speeds rear | i_ | rear wheel speeds + lateral accel |
 | 0x24B | Wheel speeds front | i_ | front wheel speeds + yaw rate |
+| 0x280 | Steering angle | i_ | steering wheel angle |
+| 0x294 | Wheel speeds rear | i_ | rear wheel speeds + lateral accel |
+| 0x295 | RPM (ECM) | c_ | bytes 6–7 BE, `raw & 0x1FFF = rpm` (top 3 bits masked) |
+| 0x2B5 | Throttle position | i_ | throttle angle percentage |
 | 0x3D3 | Transmission oil temp | i_ | byte 4 LE, `raw − 40 = °C` |
-| 0x4D5 | Engine temp (ECM) | c_ | byte 6, `raw − 60 = °C` (part of multi-signal frame) |
 | 0x3F3 | Gear position (TSM) | c_ | fully decoded with gear/mode table; includes manual/sport modes |
 | 0x315 | Air temp | i_ | ambient/outside air temperature |
-| 0x280 | Steering angle | i_ | steering wheel angle |
 | 0x353 | Gear selector | i_ | gear signal (separate from 0x3F3) |
-| 0x2B5 | Throttle position | i_ | throttle angle percentage |
+| 0x4D5 | Engine temp (ECM) | c_ | byte 6, `raw − 60 = °C` (part of multi-signal frame) |
 
 ### HS Bus — Facelift Cluster Outputs & Status Frames
 
