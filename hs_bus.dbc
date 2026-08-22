@@ -306,6 +306,8 @@ BO_ 1297 i_HS_IPC_InitState_0x511: 8 Vector__XXX
 
 BO_ 1343 c_HS_EPB_Status_0x53F: 8 Vector__XXX
 
+BO_ 1281 c_HS_BatteryNotCharging_WarningGate_0x501: 8 Vector__XXX
+
 BO_ 1511 u_HS_IPC_Unknown_0x5E7: 1 Vector__XXX
  SG_ u_Byte0 : 0|8@1+ (1,0) [0|255] "" Vector__XXX
 
@@ -330,6 +332,20 @@ BO_ 789 i_HS_AirTemperature_0x315: 8 Vector__XXX
 
 BO_ 851 i_HS_GearSelector_0x353: 8 Vector__XXX
  SG_ i_Gear : 27|4@0+ (1,0) [0|15] "" Vector__XXX
+
+BO_ 853 c_HS_IPC_EngineTemperatureWarnings_0x355: 8 Vector__XXX
+ SG_ c_EngineOverheat_Red : 46|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ c_EngineOverheat_Red_Alt : 43|3@1+ (1,0) [0|7] "" Vector__XXX
+ SG_ c_EngineTemperatureHigh_Yellow : 42|6@1+ (1,0) [0|63] "" Vector__XXX
+
+BO_ 953 c_HS_EPB_ParkBrakeWarnings_0x3B9: 8 Vector__XXX
+ SG_ c_BongSound : 40|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_BeepBeepSound : 41|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_ParkBrakeFault_Yellow : 48|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_CannotApplyFootbrake_Red : 49|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_ParkBrakeApplied_Red : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_BrakeWarningIndicator_Mask0x04 : 58|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_ApplyFootAndParkBrake_Yellow : 57|2@1+ (1,0) [0|3] "" Vector__XXX
 
 BO_ 979 i_HS_TransmissionOilTemp_0x3D3: 8 Vector__XXX
  SG_ i_TransmissionOilTemp : 39|8@0+ (1,-40) [-40|214] "degC" Vector__XXX
@@ -368,6 +384,8 @@ CM_ BO_ 863 "c_ACC_Status_0x35F: CONFIRMED by bench test -- drives ACC (Adaptive
 CM_ BO_ 880 "i_LEDBacklight_0x370: Sourced from a different openinverter.org forum contributor (not Tom-evnut, SomersetEV, or VanGogh) in the same GSM thread, testing a Gen 1 GSM part number JLR GJ32-7E453-AB. byte6 = backlight dimmer (0x00=0%, 0xFF=100%), byte7 = backlight on/off (0x00=off, 0xFF=on). Poster noted they hadn''t found anything else on this ID. Not present in any of our own pulled logs (jag-knob/sport/wake/rotate/awake-lower-knob) -- unconfirmed against our own data, single-source.";
 
 CM_ BO_ 487 "i_HS_ClusterRTR_0x1E7: REMOTE (RTR) frame, DLC=1, NO DATA. BENCH-CONFIRMED: on a re-run with the RTR column visible in SavvyCAN the frame shows RTR=1, Len=1 and empty data. Transmitted by the cluster itself as the very first frame on the HS bus at power-on, then not repeated. The 0xAA 'payload' seen in earlier CSV exports was an export artifact -- SavvyCAN's CSV export drops the RTR flag and materialises a phantom data byte for remote frames. By CAN definition this is a remote transmission REQUEST for ID 0x1E7 (asking whatever node owns 0x1E7 to transmit it), not a data 'presence/hello' frame -- the earlier alternating-bit-pattern interpretation is void. Its functional purpose (what the cluster expects in reply, if anything) is still i_/unknown. Cluster-owned: observe only, do not transmit with the cluster present. NB: DBC has no native RTR flag -- the remote nature is recorded here in the comment and name only.";
+CM_ BO_ 1281 "c_HS_BatteryNotCharging_WarningGate_0x501: Gating condition required to clear 'Battery Not Charging' LCD warning. BENCH-CONFIRMED 2026-08-16: transmission of 0x501 on HS bus is NECESSARY but not always sufficient to suppress the warning (interdependent with voltage mismatch, ECM generator status, and DTC latch state). Payload structure not yet decoded (entire frame currently u_, only presence/absence confirmed as affecting warning state). Likely a module presence/status frame (similar to ECM/RSJB/ACC patterns) rather than a direct fault-bit encoding. See xf250-can-re/frames/1281_0x501_HS.md for full bench history and unknowns. Frequency u_.";
+
 CM_ BO_ 1511 "u_HS_IPC_Unknown_0x5E7: single DLC=1 frame, CSV shows payload 0x8A, seen exactly once as the first frame at power-on on HS in one IPC-alone bench capture (Cluster-CANMS-Connect_14). Undecoded. STRONG HYPOTHESIS (untested for this ID): 0x5E7 is itself a REMOTE (RTR) frame whose 0x8A is a phantom export byte, exactly like 0x1E7 -- which was BENCH-CONFIRMED as RTR=1/Len=1/no-data on a re-run with the RTR column visible, its own CSV 0xAA proven to be an export artifact. 0x5E7 shares the same DLC=1 / first-at-power-on shape and sits at 0x1E7+0x400. Not yet directly observed with the RTR column, and single-occurrence keeps a bus-error-fragment reading alive. u_ -- needs a bench re-run watching 0x5E7's RTR bit to confirm.";
 
 CM_ BO_ 919 "u_Unknown_0x397: Byte 1 alternates 0x80/0x00, byte 5 static 0x3C (60 dec), byte 7 alternates 0x10/0x00. Pattern suggests a status/valid flag pair -- undecoded.";
@@ -461,4 +479,18 @@ CM_ BO_ 660 "i_HS_WheelSpeeds_Rear_0x294: cross-platform candidate (Racelogic .R
 CM_ BO_ 693 "i_HS_ThrottlePosition_0x2B5: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander/Evoque map 0x2B5 to wheel speed instead. Not bench-confirmed on X250. i_.";
 CM_ BO_ 789 "i_HS_AirTemperature_0x315: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander maps 0x315 to clutch position. Not bench-confirmed on X250. i_.";
 CM_ BO_ 851 "i_HS_GearSelector_0x353: cross-platform candidate (Racelogic .REF, XK X150) -- gear in D3 low nibble. Not bench-confirmed on X250. i_.";
+CM_ BO_ 853 "c_HS_IPC_EngineTemperatureWarnings_0x355: Engine temperature warning LCD messages. BENCH-CONFIRMED 2026-08-16: frame gated by multi-bit patterns to distinguish warning severity. Bits 46-47 (2-bit value) = 'Engine Overheating' red warning. Alternative trigger: bits 43-45 (3-bit) + bit 47 also raise red warning. Bits 42, 44, 45, 47 all set = 'Engine Temperature High' yellow warning. Frame is stateless message-trigger; no counter/checksum observed. Frequency u_. Byte boundaries for bits 42-47 not yet extracted; remaining bits 0-41 and 48-63 undecoded.";
+CM_ SG_ 853 c_EngineOverheat_Red "Bits 46-47 (2-bit). Primary trigger for 'Engine Overheating' red LCD warning.";
+CM_ SG_ 853 c_EngineOverheat_Red_Alt "Bits 43-45 (3-bit) + bit 47. Alternative pattern that also triggers 'Engine Overheating' red warning.";
+CM_ SG_ 853 c_EngineTemperatureHigh_Yellow "Bits 42, 44, 45, 47 (6-bit span). Triggers 'Engine Temperature High' yellow LCD warning when all four bits set.";
+
+CM_ BO_ 953 "c_HS_EPB_ParkBrakeWarnings_0x3B9: Park brake system status and warnings. BENCH-CONFIRMED 2026-08-16 (completely replaces the earlier incorrect 'OilTemp' label, which came from pre-facelift sources and was contradicted by cross-platform reference docs and direct bench testing). Encodes: audio alerts (bong/beep), brake fault conditions (yellow 'Park Brake Fault', red 'Cannot Apply Footbrake'), brake applied status, and LCD warning indicator combinations. Bits 40-41 trigger audible alerts; bits 48-49,56-59 trigger LCD messages and brake-warning indicator states. No rolling counter observed; suspected but unverified complement/checksum in byte 5 lower and byte 7 upper. Frame is stateless message-trigger style (setting bits causes transient LCD display/alert). Frequency u_. Byte boundaries not extracted; remaining bits u_.";
+CM_ SG_ 953 c_BongSound "Bit 40. Audible bong sound alert.";
+CM_ SG_ 953 c_BeepBeepSound "Bit 41. Audible beep-beep sound alert.";
+CM_ SG_ 953 c_ParkBrakeFault_Yellow "Bit 48. LCD message: 'Park Brake Fault' (yellow warning).";
+CM_ SG_ 953 c_CannotApplyFootbrake_Red "Bit 49. LCD message: 'Cannot Apply Footbrake' (red warning).";
+CM_ SG_ 953 c_ParkBrakeApplied_Red "Bit 56. LCD message: 'Park Brake Applied' (red) + brake warning indicator (mask 0x01).";
+CM_ SG_ 953 c_BrakeWarningIndicator_Mask0x04 "Bit 58. Brake warning indicator flag (mask 0x04).";
+CM_ SG_ 953 c_ApplyFootAndParkBrake_Yellow "Bits 57-58. LCD message: 'Apply Foot and Park Brake' (yellow warning).";
+
 CM_ BO_ 979 "i_HS_TransmissionOilTemp_0x3D3: cross-platform candidate (Racelogic .REF, XK X150). DIVERGENCE: Freelander maps 0x3D3 to coolant temp. Not bench-confirmed on X250. i_.";

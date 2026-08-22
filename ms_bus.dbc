@@ -221,6 +221,14 @@ BO_ 1257 c_MS_IPC_ClockMinSec_0x4E9: 8 Vector__XXX
 BO_ 1264 c_MS_IPC_Unknown_0x4F0: 8 Vector__XXX
 BO_ 1276 c_LateMY_Unknown_0x4FC: 8 Vector__XXX
 
+BO_ 296 c_MS_IPC_MemorySettingsMessages_0x128: 8 Vector__XXX
+ SG_ c_Memory1Recalled : 51|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Memory2Recalled : 52|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Memory3Recalled : 51|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ c_Memory1Saved : 59|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Memory2Saved : 60|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ c_Memory3Saved : 59|2@1+ (1,0) [0|3] "" Vector__XXX
+
 BO_ 1281 c_MS_IPC_Unknown_0x501: 8 Vector__XXX
 BO_ 1282 c_MS_HDM_Status_0x502: 8 Vector__XXX
 BO_ 1283 c_MS_RCC_Status_0x503: 8 Vector__XXX
@@ -343,3 +351,11 @@ CM_ SG_ 360 c_TurnSwitchState "byte0 decoded Direction-Indicator switch state. C
 
 VAL_ 136 c_PowerMode 0 "IgnitionOff" 4 "Accessory" 6 "IgnitionOn" 7 "EngineRunning" 9 "EngineCranking" ;
 VAL_ 360 c_TurnSwitchState 8 "OFF_Neutral" 10 "LEFT" 11 "OpenCircuit_Fault" ;
+
+CM_ BO_ 296 "c_MS_IPC_MemorySettingsMessages_0x128: Seat/steering-column/mirror memory settings LCD messages. BENCH-CONFIRMED 2026-08-16: bit 51 = 'Memory 1 Settings Recalled', bit 52 = 'Memory 2 Settings Recalled', both bits 51+52 = 'Memory 3 Settings Recalled'. Bit 59 = 'Memory 1 Settings Saved' + bong, bit 60 = 'Memory 2 Settings Saved' + bong, both bits 59+60 = 'Memory 3 Settings Saved' + bong. Frame is stateless message-trigger: no counter/checksum. Frequency u_.";
+CM_ SG_ 296 c_Memory1Recalled "Bit 51. LCD message: 'Memory 1 Settings Recalled'.";
+CM_ SG_ 296 c_Memory2Recalled "Bit 52. LCD message: 'Memory 2 Settings Recalled'.";
+CM_ SG_ 296 c_Memory3Recalled "Bits 51+52 combined. LCD message: 'Memory 3 Settings Recalled'.";
+CM_ SG_ 296 c_Memory1Saved "Bit 59. LCD message: 'Memory 1 Settings Saved' + audible bong.";
+CM_ SG_ 296 c_Memory2Saved "Bit 60. LCD message: 'Memory 2 Settings Saved' + audible bong.";
+CM_ SG_ 296 c_Memory3Saved "Bits 59+60 combined. LCD message: 'Memory 3 Settings Saved' + audible bong.";
